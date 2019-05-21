@@ -1,0 +1,31 @@
+制作自动安装ubuntu镜像
+
+$ mkdir mnt/ ubuntu/
+$ ls -al
+  mnt/ 
+ubuntu/
+ubuntu-16.04.3-server-arm64.iso
+
+$ sudo mount ubuntu-16.04.3-server-arm64.iso mnt/
+$ cp -rf ./mnt/* ./mnt/.disk/ ./ubuntu/
+$ sudo umount ./mnt/
+
+
+$ vim ubuntu/boot/grub/grub.cfg
+
+set menu_color_normal=cyan/blue
+set menu_color_highlight=white/blue
+set timeout=60 
+insmod gzio
+menuentry 'Install Ubuntu' {
+    set background_color=black
+    linux    /install/vmlinuz auto-install/enable=true file=/cdrom/preseed/ubuntu.seed
+    initrd   /install/initrd.gz
+}
+
+preseed文件preseed/ubuntu.seed
+
+
+sudo xorriso -as mkisofs -r -checksum_algorithm_iso md5,sha1 -V 'Ubuntu-Server 16.04.3 LTS amd64' -o ./new-ubuntu-16.04.3-server-amd64.iso -J -joliet-long -cache-inodes -e boot/grub/efi.img -no-emul-boot -append_partition 2 0xef ubuntu/boot/grub/efi.img  -partition_cyl_align all ubuntu
+
+mkisofs -R -J -T -v -no-emul-boot -boot-load-size 4 -boot-info-table -b isolinux/isolinux.bin -c isolinux/boot.cat -o auto-ubuntu-16.04.4-server-amd64.iso  ubuntu/

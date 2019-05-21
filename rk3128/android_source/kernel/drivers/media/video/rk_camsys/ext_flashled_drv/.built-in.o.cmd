@@ -1,0 +1,1 @@
+cmd_drivers/media/video/rk_camsys/ext_flashled_drv/built-in.o :=  rm -f drivers/media/video/rk_camsys/ext_flashled_drv/built-in.o; arm-eabi-ar rcsD drivers/media/video/rk_camsys/ext_flashled_drv/built-in.o

@@ -1,0 +1,4 @@
+action=/usr/share/nginx/html/action
+display=/usr/share/nginx/html/result.log
+device=/usr/share/nginx/html/cdevice
+firmware=W-M3_V1.3_P1710161_20171129_2nd.img

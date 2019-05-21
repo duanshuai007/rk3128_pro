@@ -1,0 +1,339 @@
+如果设置了clean session
+
+pub的qos0消息不会被保留。
+
+clean session
+当sub qos=0时，无法接受离线期间的消息。
+在线期间，接收到的消息都被转换成qos0的接收方式。
+保留信息：pub发送的带有retain标志的消息全部按照qos0方式进行接收。
+
+当sub qos=1时，能够接收到离线期间的qos1和qos2的消息,qos2消息被转换为qos1方式接收。按照发送顺序接收。
+在线期间，qos>1的消息被转换成qos1的接收方式。
+保留信息：pub发送的带有retain标志的消息按照各自的qos(<=1)方式进行接收,大于1时按照qos1的方式接收。
+
+当sub qos=2时，能够接收到离线期间的qos1和qos2的消息，且按照正常模式接收。优先接收qos1的消息，然后再接收qos2的消息。
+在线期间，消息都按照各自的qos方式接收。
+保留信息：pub发送的带有retain标志的消息按照各自的qos方式进行接收。
+
+will qos 直接影响lastwill信息的发送方式，与pub发送的qos发送方式一致。
+will retain 会讲lastwill消息保留，当有新的订阅者时会将消息发送给它。发送方式按照will-qos方式发送。
+will flag 就是lastwill消息的使能开关
+
+retain
+无论订阅者是否在线retain的消息都能保存在服务端，然后再订阅者上线时发送给订阅者。不在乎qos的值。
+
+
+username
+passwd
+ssl
+
+
+mosquitto_sub -i 18642084221 -c -k 120 -q 2 -t "duanshuai" --will-payload "iamoffline2" --will-topic offline --will-qos 1 -d
+
+								   用户名      密码
+mosquitto_sub -v -t mtopic -d -u duanshuai -P 19870209
+
+Mosquitto服务器的配置文件为/etc/mosquitto/mosquitto.conf，关于用户认证的方式和读取的配置都在这个文件中进行配置。
+allow_anonymous允许匿名
+password_file密码文件
+acl_file访问控制列表
+
+#不允许匿名
+allow_anonymous false
+# 配置用户密码文件
+password_file /etc/mosquitto/pwfile
+# 配置topic和用户
+acl_file /etc/mosquitto/acl
+添加用户'chisj'密码’chisj‘，
+#mosquitto_passwd -c /etc/mosquitto/pwfile chisj
+mosquitto_passwd -b /etc/mosquitto/pwfile duanshuai 1234 在文件内新加一个用户条目
+
+修改acl文件内的Topic和用户的关系
+# This affects access control for clients with no username.
+#topic read $SYS/#
+
+# This only affects clients with username "roger".
+#user roger
+#topic foo/bar
+user duanshuai
+topic write mtopic/#
+user lili
+topic write mtopic/#
+
+# This affects all clients.
+#pattern write $SYS/broker/connection/%c/state
+user duanshuai
+topic read mtopic/#
+user lili
+topic read mtopic/#
+
+新加了两个用户duanshuai和lili
+
+启动服务
+mosquitto -c /etc/mosquitto/mosquitto.conf
+
+启动sub端
+#mosquitto_sub -t mtopic -u chisj -P chisj
+
+pub端发送消息
+#mosquitto_pub -t mtopic -u chisj -P chisj -m "test"
+
+
+wget https://github.com/owntracks/tools/raw/master/TLS/generate-CA.sh
+protocol
+
+
+$mosquitto_sub  -p 8883 -t "/mqtt/topic/1" --cafile /home/chenwu/MQTTESP8266/tools/ca/ca.crt --cert /home/chenwu/MQTTESP8266/tools/client/client.crt --key /home/chenwu/MQTTESP8266/tools/client/client.key
+
+
+mosquitto_sub -p 8883 -t mtopic --cafile /home/duanshuai/myCA/ca.crt --cert /home/duanshuai/m
+yCA/client.crt --key /home/duanshuai/myCA/client.key -q 2 --id -c -d
+
+mosquitto_sub -h 192.168.200.25 -p 8883 -t mtopic --cafile ./ca.crt --cert client.crt --key client.key 
+
+
+
+./mosquitto_sub: error while loading shared libraries: libmosquitto.so.1: cannot open shared object file: No such file or directory
+解决方法：
+执行命令：sudo ln -s /usr/local/lib/libmosquitto.so.1 /usr/lib/libmosquitto.so.1和ldconfig
+
+
+博客
+https://www.cnblogs.com/f-ck-need-u/p/6089523.html
+http://www.cnblogs.com/f-ck-need-u/p/7048359.html#blogopenssl 
+
+证书详解
+https://www.cnblogs.com/leslies2/p/7442956.html
+注册证书的网站
+1.Amazon Web Services (AWS) 是 Amazon.com 旗下的一个网络云服务站点 
+https://aws.amazon.com/cn/?nc2=h_lg
+2.ChinaSSL是亚狐科技旗下专为客户提供数字证书、网络安全服务的站点
+https://csr.chinassl.net/index.html
+3.MySSL 则是亚洲诚信（TRUSTASIA）旗下专为用户提供网络安全云服务平台
+https://myssl.com/csr_create.html
+
+
+
+SSL单向认证过程
+(1)client_hello
+客户端发起请求，以明文传输请求信息，包含版本信息，加密套件候选列表，压缩算法候选列表，随机数，扩展字段等信息，相关信息如下：
+支持的最高TSL协议版本version，从低到高依次 SSLv2 SSLv3 TLSv1 TLSv1.1 TLSv1.2，当前基本不再使用低于 TLSv1 的版本;
+客户端支持的加密套件 cipher suites 列表， 每个加密套件对应前面 TLS 原理中的四个功能的组合：认证算法 Au (身份验证)、密钥交换算法 KeyExchange(密钥协商)、对称加密算法 Enc (信息加密)和信息摘要 Mac(完整性校验);
+支持的压缩算法 compression methods 列表，用于后续的信息压缩传输;
+随机数 random_C，用于后续的密钥的生成;
+扩展字段 extensions，支持协议与算法的相关参数以及其它辅助信息等，常见的 SNI 就属于扩展字段，后续单独讨论该字段作用。
+
+(2).server_hello+server_certificate+sever_hello_done
+server_hello, 服务端返回协商的信息结果，包括选择使用的协议版本 version，选择的加密套件 cipher suite，选择的压缩算法 compression method、随机数 random_S 等，其中随机数用于后续的密钥协商;
+server_certificates, 服务器端配置对应的证书链，用于身份验证与密钥交换;
+server_hello_done，通知客户端 server_hello 信息发送结束;
+
+(3).证书校验
+[证书链]的可信性 trusted certificate path，方法如前文所述;
+证书是否吊销 revocation，有两类方式离线 CRL 与在线 OCSP，不同的客户端行为会不同;
+有效期 expiry date，证书是否在有效时间范围;
+域名 domain，核查证书域名是否与当前的访问域名匹配，匹配规则后续分析;
+
+(4).client_key_exchange+change_cipher_spec+encrypted_handshake_message
+client_key_exchange，合法性验证通过之后，客户端计算产生随机数字 Pre-master，并用证书公钥加密，发送给服务器;
+此时客户端已经获取全部的计算协商密钥需要的信息：两个明文随机数 random_C 和 random_S 与自己计算产生的 Pre-master，计算得到协商密钥; 
+enc_key=Fuc(random_C, random_S, Pre-Master)
+change_cipher_spec，客户端通知服务器后续的通信都采用协商的通信密钥和加密算法进行加密通信;
+encrypted_handshake_message，结合之前所有通信参数的 hash 值与其它相关信息生成一段数据，采用协商密钥 session secret 与算法进行加密，然后发送给服务器用于数据与握手验证;
+
+(5).change_cipher_spec+encrypted_handshake_message
+服务器用私钥解密加密的 Pre-master 数据，基于之前交换的两个明文随机数 random_C 和 random_S，计算得到协商密钥:enc_key=Fuc(random_C, random_S, Pre-Master);
+计算之前所有接收信息的 hash 值，然后解密客户端发送的 encrypted_handshake_message，验证数据和密钥正确性;
+change_cipher_spec, 验证通过之后，服务器同样发送 change_cipher_spec 以告知客户端后续的通信都采用协商的密钥与算法进行加密通信;
+encrypted_handshake_message, 服务器也结合所有当前的通信参数信息生成一段数据并采用协商密钥 session secret 与算法加密并发送到客户端;
+
+(6).握手结束
+客户端计算所有接收信息的 hash 值，并采用协商密钥解密 encrypted_handshake_message，验证服务器发送的数据和密钥，验证通过则握手完成;
+
+(7).加密通信
+开始使用协商密钥与算法进行加密通信。
+SSL/TLS双向认证
+和单向认证几乎一样，只是在client认证完服务器证书后，client会将自己的证书client.crt传给服务器。服务器验证通过后，开始秘钥协商。 
+
+
+
+
+
+
+
+#################################################################################
+
+openssl参数解释
+
+http://www.cnblogs.com/f-ck-need-u/p/7113610.html
+
+#################################################################################
+
+
+openssl req -new -SHA256 -newkey rsa:2048 -nodes -keyout localhost.com.key -out localhost.com.csr -subj "/C=CN/ST=ShenYang/L=LiaoNing/O=WAMING/OU=KAIFA/CN=localhost.com"
+
+req:主要用于生成和处理PKCS#10证书请求
+
+
+例如，使用x509工具自建CA。由于x509无法建立证书请求文件，所以只能使用openssl 
+openssl x509 -req -in req.csr -signkey key.pem -out x509.crt
+req来生成请求文件，然后使用x509来自签署。
+自签署时，使用"-req"选项明确表示输入文件为证书请求文件，否则将默认以为是证书文件，再使用"-signkey"提供自签署时使用的私钥。
+
+
+
+-new:生成新的证书请求以及私钥，默认为1024比特
+-newkey rsa:bits
+用于生成新的rsa秘钥以及证书请求。（如果用户不知道生成的私钥文件名称，默认采用private.pem,如果不指定-out,则将证书打印在屏幕)
+"-newkey"选项和"-new"选项类似，只不过"-newkey"选项可以直接指定私钥的算法和长度，所以它主要用在openssl req自动创建私钥时。
+它的使用格式为"-newkey arg"，其中arg的格式为"rsa:numbits"，rsa表示创建rsa私钥，numbits表示私钥的长度，如果不给定长度(即"-newkey rsa")则默认从配置文件中读取长度值。其实不止支持rsa私钥，只不过现在基本都是用rsa私钥，所以默认就使用rsa。
+
+
+-keyout:指定生成的私钥文件
+-nodes:不需要密码
+-days:设置证书有效期
+-in:指定输入文件名
+-signkey filename:指定自签名私钥文件
+-out:指定输出文件名
+-x509:一种证书格式，一般以.crt结尾。x509工具不会使用openssl配置文件中的设定，而是完全需要自行设定或者使用该伪命令的默认值，它就像是一个完整的小型的CA工具箱。
+-x509         ：指定该选项时，将生成一个自签署证书，而不是创建证书请求。一般用于测试或者为根CA创建自签名证书。
+
+-md2|-md5|-sha1|-mdc2：指定单向加密的算法。
+
+x509        签发X.509格式证书命令。
+
+-subj:指定用户信息
+为新请求设置主题名称或在处理请求时替换主题名称。arg必须格式化为/type0=value0/type1=value1/type2=…，字符可能被\(反斜杠)转义，没有空格被跳过。
+
+-extensions:表示按openssl配置文件v3_ca项添加扩展。
+
+
+【信息输出选项：】
+-text：以text格式输出证书内容，即以最全格式输出，
+     ：包括public key,signature algorithms,issuer和subject names,serial number以及any trust settings.
+-certopt option：自定义要输出的项
+-noout         ：禁止输出证书请求文件中的编码部分
+-pubkey        ：输出证书中的公钥
+-modulus       ：输出证书中公钥模块部分
+-serial        ：输出证书的序列号
+-subject       ：输出证书中的subject
+-issuer        ：输出证书中的issuer，即颁发者的subject
+-subject_hash  ：输出证书中subject的hash码
+-issuer_hash   ：输出证书中issuer(即颁发者的subject)的hash码
+-hash          ：等价于"-subject_hash"，但此项是为了向后兼容才提供的选项
+-email         ：输出证书中的email地址，如果有email的话
+-startdate     ：输出证书有效期的起始日期
+-enddate       ：输出证书有效期的终止日期
+-dates         ：输出证书有效期，等价于"startdate+enddate"
+-fingerprint   ：输出指纹摘要信息
+
+
+
+【签署选项：】
+*****************************************************************************************
+*  伪命令x509可以像openssl ca一样对证书或请求执行签名动作。注意，openssl x509         *
+*  不读取配置文件，所有的一切配置都由x509自行提供，所以openssl x509像是一个"mini CA"  *
+*****************************************************************************************
+-signkey filename：该选项用于提供自签署时的私钥文件，自签署的输入文件"-in file"的file可以是证书请求文件，也可以是已签署过的证书。-days arg：指定证书有效期限，默认30天。
+-x509toreq：将已签署的证书转换回证书请求文件。需要使用"-signkey"选项来传递需要的私钥。
+
+-req：x509工具默认以证书文件做为inputfile(-in file)，指定该选项将使得input file的file为证书请求文件。
+
+-set_serial n：指定证书序列号。该选项可以和"-singkey"或"-CA"选项一起使用。
+             ：如果和"-CA"一起使用，则"-CAserial"或"-CAcreateserial"选项指定的serial值将失效。
+             ：序列号可以使用数值或16进制值(0x开头)。也接受负值，但是不建议。
+
+-CA filename      ：指定签署时所使用的CA证书。该选项一般和"-req"选项一起使用，用于为证书请求文件签署。
+
+-CAkey filename   ：设置CA签署时使用的私钥文件。如果该选项没有指定，将假定CA私钥已经存在于CA自签名的证书文件中。
+
+-CAserial filename：设置CA使用的序列号文件。当使用"-CA"选项来签名时，它将会使用某个文件中指定的序列号来唯一标识此次签名后的证书文件。
+                  ：这个序列号文件的内容仅只有一行，这一行的值为16进制的数字。当某个序列号被使用后，该文件中的序列号将自动增加。
+                  ：默认序列号文件以CA证书文件基名加".srl"为后缀命名。如CA证书为"mycert.pem"，则默认寻找的序列号文件为"mycert.srl"
+
+-CAcreateserial   ：当使用该选项时，如果CA使用的序列号文件不存在将自动创建：该文件将包含序列号值"02"并且此次签名后证书文件序列号为1。
+                  ：一般如果使用了"-CA"选项而序列号文件不存在将会产生错误"找不到srl文件"。
+
+-extfile filename ：指定签名时包含要添加到证书中的扩展项的文件。
+
+
+
+
+
+
+
+openssl req [-new] [-newkey rsa:bits] [-verify] [-x509] [-in filename] [-out filename] [-key filename] [-passin arg] [-passout arg] 
+[-keyout filename] [-pubkey] [-nodes] [-[dgst]] [-config filename] [-subj arg] [-days n] [-set_serial n] [-extensions section]
+[-reqexts section] [-utf8] [-nameopt] [-reqopt] [-subject] [-subj arg] [-text] [-noout] [-batch] [-verbose]
+ 
+选项说明：
+-new        ：创建一个证书请求文件，会交互式提醒输入一些信息，这些交互选项以及交互选项信息的长度值以及其他一些扩展属性在配置文件(默认为
+            ：openssl.cnf，还有些辅助配置文件)中指定了默认值。如果没有指定"-key"选项，则会自动生成一个RSA私钥，该私钥的生成位置
+            ：也在openssl.cnf中指定了。如果指定了-x509选项，则表示创建的是自签署证书文件，而非证书请求文件
+
+-newkey args：类似于"-new"选项，创建一个新的证书请求，并创建私钥。args的格式是"rsa:bits"(其他加密算法请查看man)，其中bits
+            ：是rsa密钥的长度，如果bits省略了(即-newkey rsa)，则长度根据配置文件中default_bits指令的值作为默认长度，默认该值为2048
+            ：如果指定了-x509选项，则表示创建的是自签署证书文件，而非证书请求文件
+
+-nodes      ：默认情况下，openssl req自动创建私钥时都要求加密并提示输入加密密码，指定该选项后则禁止对私钥文件加密
+-key filename    ：指定私钥的输入文件，创建证书请求时需要
+-keyout filename ：指定自动创建私钥时私钥的存放位置，若未指定该选项，则使用配置文件中default_keyfile指定的值，默认该值为privkey.pem
+-[dgst]          ：指定对创建请求时提供的申请者信息进行数字签名时的单向加密算法，如-md5/-sha1/-sha512等，
+                 ：若未指定则默认使用配置文件中default_md指定的值
+-verify       ：对证书请求文件进行数字签名验证
+-x509         ：指定该选项时，将生成一个自签署证书，而不是创建证书请求。一般用于测试或者为根CA创建自签名证书
+-days n       ：指定自签名证书的有效期限，默认30天，需要和"-x509"一起使用。
+              ：注意是自签名证书期限，而非请求的证书期限，因为证书的有效期是颁发者指定的，证书请求者指定有效期是没有意义的，
+              ：配置文件中的default_days指定了请求证书的有效期限，默认365天
+-set_serial n ：指定生成自签名证书时的证书序列号，该序列号将写入配置文件中serial指定的文件中，这样就不需要手动更新该序列号文件
+              ：支持数值和16进制值(0x开头)，虽然也支持负数，但不建议
+-in filename  ：指定证书请求文件filename。注意，创建证书请求文件时是不需要指定该选项的
+-out filename ：证书请求或自签署证书的输出文件，也可以是其他内容的输出文件，不指定时默认stdout
+
+-subj args    ：替换或自定义证书请求时需要输入的信息，并输出修改后的请求信息。args的格式为"/type0=value0/type1=value1..."，
+              ：如果value为空，则表示使用配置文件中指定的默认值，如果value值为"."，则表示该项留空。其中可识别type(man req)有：
+              ：C是Country、ST是state、L是localcity、O是Organization、OU是Organization Unit、CN是common name等
+ 
+
+
+
+
+
+
+
+
+
+【输出内容选项：】
+-text         ：以文本格式打印证书请求
+-noout        ：不输出部分信息
+-subject      ：输出证书请求文件中的subject(如果指定了x509，则打印证书中的subject)
+-pubkey       ：输出证书请求文件中的公钥
+
+【配置文件项和杂项：】
+-passin arg      ：传递解密密码
+-passout arg     ：指定加密输出文件时的密码
+-config filename ：指定req的配置文件，指定后将忽略所有的其他配置文件。如果不指定则默认使用/etc/pki/tls/openssl.cnf中req段落的值
+-batch           ：非交互模式，直接从配置文件(默认/etc/pki/tls/openssl.cnf)中读取证书请求所需字段信息。但若不指定"-key"时，仍会询问key
+-verbose         ：显示操作执行的详细信息
+
+
+
+
+
+input_password ：密码输入文件，和命令行的"-passin"选项对应，密码格式以及意义见"openssl密码格式"
+output_password：密码的输出文件，与命令行的"-passout"选项对应，密码格式以及意义见"openssl密码格式"
+default_bits   ：openssl req自动生成RSA私钥时的长度，不写时默认是512，命令行的"-new"和"-newkey"可能会用到它 
+default_keyfile：默认的私钥输出文件，与命令行的"-keyout"选项对应 
+encrypt_key    ：当设置为no时，自动创建私钥时不会加密该私钥。设置为no时与命令行的"-nodes"等价。还有等价的兼容性写法：encry_rsa_key 
+default_md     ：指定创建证书请求时对申请者信息进行数字签名的单向加密算法，与命令行的"-[dgst]"对应 
+prompt         ：当指定为no时，则不提示输入证书请求的字段信息，而是直接从openssl.cnf中读取 ：请小心设置该选项，很可能请求文件创建失败就是因为该选项设置为no 
+distinguished_name：(DN)是一个扩展属性段落，用于指定证书请求时可被识别的字段名称。
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,119 @@
+ubuntu安装镜像定制
+
+1.      安装工具
+# apt-get install squashfs-tools genisoimage
+
+2.      解压iso镜像文件
+# mkdir oldiso
+# mount -o loop ubuntu-12.04-desktop-amd64.iso oldiso
+# cp -rp oldiso newiso
+# umount oldiso
+
+此处需要查看拷贝的文件是否完整正确，因为镜像里面有个.disk查到隐藏文件，网上的好些教程使用的cp -r oldiso/*命令没有拷贝隐藏的文件，导致做出来的镜像文件无法进行安装。
+
+3.      解压filesystem.squashfs文件
+unsquashfs newiso/casper/filesystem.squashfs
+将filesystem.squashfs文件解压到当前目录，解压出来的目录为squashfs-root。
+
+4.      拷贝安装软件包
+cp xxx squashfs-root/var
+拷贝所有需要手动安装的软件到squashfs-root/var目录。
+
+5.      切换进新的系统
+chroot squashfs-root
+mount -t proc none /proc
+mount -t sysfs none /sys
+mount -t devpts none /dev/pts
+
+
+
+6.      定制系统
+
+7.1    配置安装源文件
+
+# mv /etc/apt/sources.list /etc/apt/sources.list_bak
+# vi /etc/apt/sources.list
+
+备份/etc/apt/sources.list文件，并编译新的/etc/apt/sources.list为如下内容。
+
+
+# apt-get update
+
+7.2    使用apt-get安装软件
+# apt-get install vim openssh-server subversion samba
+# apt-get install xxx
+
+7.4    清除临时文件和安装包
+apt-get clean
+apt-get autoremove
+rm -rf /tmp/* 
+
+7.6    退回到原来的系统
+umount /proc || umount -lf /proc
+umount /sys
+umount /dev/pts
+exit
+
+7.      重新配置并压缩根文件系统
+up:
+chmod +w newiso/casper/filesystem.manifest
+chroot squashfs-root dpkg-query -W --showformat='${Package} ${Version}\n' >newiso/casper/filesystem.manifest
+cp newiso/casper/filesystem.manifest newiso/casper/filesystem.manifest-desktop
+sed -i '/ubiquity/d' newiso/casper/filesystem.manifest-desktop
+sed -i '/casper/d' newiso/casper/filesystem.manifest-desktop
+rm newiso/casper/filesystem.squashfs
+mksquashfs squashfs-root newiso/casper/filesystem.squashfs
+
+down:
+printf $(du -sx --block-size=1 squashfs-root | cut -f1) > newiso/casper/filesystem.size
+cd newiso
+rm md5sum.txt
+find -type f -print0 |xargs -0 md5sum | grep -v isolinux/boot.cat | tee md5sum.txt
+
+8.      重新制 作iso镜像
+mkisofs -D -r -V "My ubuntu-12.04" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../my-custom.iso .
+
+9.      使用dvd光盘烧录或者用UltraISO烧录到U盘中进行测试，具体细节可自行在网上搜索资料，此处不做详细介绍。
+
+【注意事项】
+       为了方便起见，本文全程使用root用户进行操作，原则上不推荐直接使用root用户，   如不是用root用户，请参考下面文档中使用sudo执行的命令来进行操作。
+【参考文档】
+
+http://www.latelee.org/using-gnu-linux/ubuntu-livecd.html
+
+https://help.ubuntu.com/community/LiveCDCustomization
+
+http://forum.ubuntu.org.cn/viewforum.php?f=77&sid=ceed550966360980be70934fd8aec346
+
+
+
+
+
+
+
+
+
+
+
+
+apt-get remove *gnome*
+
+账号root 密码111
+
+
+
+
+彻底删除应用程序和配置文件
+dpkg -l |grep ^rc|awk '{print $2}' |sudo xargs dpkg -P
+
+
+
+
+
+
+
+
+
+
+
+

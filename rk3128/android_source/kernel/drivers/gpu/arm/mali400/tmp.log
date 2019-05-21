@@ -1,0 +1,65 @@
+
+adjust_code_style.
+upgrade rk_ko_ver to 5.
+make it more 'difficult' to dump down in mali_dvfs_list,
+modify period_of_notifying_mali_utilization to 20 ms.
+
+
+commit c5d29249f25ef2a07f5a5473042565fc76bcab0c
+Author: chenzhen <chenzhen@rock-chips.com>
+
+Date:   Mon Oct 12 17:08:28 2015 +0800
+
+    rk312x, mali_400_driver, platform_dependent_part:
+    Adjust code style.
+    Signed-off-by: chenzhen <chenzhen@rock-chips.com>
+    
+    Change-Id: I9cabd2b1be710e11a831c4b1505d91cdae0c7127
+
+M	drivers/gpu/arm/mali400/mali/common/mali_control_timer.c
+M	drivers/gpu/arm/mali400/mali/platform/rk30/arm_core_scaling.c
+M	drivers/gpu/arm/mali400/mali/platform/rk30/arm_core_scaling.h
+M	drivers/gpu/arm/mali400/mali/platform/rk30/custom_log.h
+M	drivers/gpu/arm/mali400/mali/platform/rk30/mali_dvfs.c
+M	drivers/gpu/arm/mali400/mali/platform/rk30/mali_dvfs.h
+M	drivers/gpu/arm/mali400/mali/platform/rk30/mali_platform.c
+M	drivers/gpu/arm/mali400/mali/platform/rk30/mali_platform.h
+M	drivers/gpu/arm/mali400/mali/platform/rk30/rk3066.c
+M	drivers/gpu/arm/mali400/mali/platform/rk30/rk_ext.h
+
+commit e807cb0236db1815214b1fc9a6fe9f8056e0f4f3
+Author: chenzhen <chenzhen@rock-chips.com>
+Date:   Mon Sep 7 18:00:48 2015 +0800
+
+    rk312x, mali_400_driver, platform_dependent_part :
+    upgrade rk_ko_ver to 5.
+
+M	drivers/gpu/arm/mali400/mali/platform/rk30/rk_ext.h
+
+commit 69ccbee87d2456d5ab6636f92a6cc017a01ee070
+Author: chenzhen <chenzhen@rock-chips.com>
+Date:   Mon Sep 7 16:31:04 2015 +0800
+
+    rk312x, mali_400_driver, platform_dependent_part :
+    1.	tidy source code, add notes.
+    2.	make it more 'difficult' to dump down in mali_dvfs_list,
+    	enhancing performance when running 3D games.
+
+M	drivers/gpu/arm/mali400/mali/platform/rk30/arm_core_scaling.c
+M	drivers/gpu/arm/mali400/mali/platform/rk30/arm_core_scaling.h
+M	drivers/gpu/arm/mali400/mali/platform/rk30/custom_log.h
+M	drivers/gpu/arm/mali400/mali/platform/rk30/mali_dvfs.c
+M	drivers/gpu/arm/mali400/mali/platform/rk30/mali_dvfs.h
+M	drivers/gpu/arm/mali400/mali/platform/rk30/mali_platform.c
+M	drivers/gpu/arm/mali400/mali/platform/rk30/mali_platform.h
+M	drivers/gpu/arm/mali400/mali/platform/rk30/rk3066.c
+
+commit 92ce12a40bc573d9af63b6b152666aab8a978b63
+Author: chenzhen <chenzhen@rock-chips.com>
+Date:   Mon Sep 7 16:24:49 2015 +0800
+
+    rk312x, mali_400_driver, rk_custom_in_common_part :
+    modify period_of_notifying_mali_utilization_to_platform_dependent_part to 20 ms.
+
+M	drivers/gpu/arm/mali400/mali/common/mali_control_timer.c
+

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:
+runlevel=S
+prevlevel=N
+umask 022
+export PATH runlevel prevlevel
+
+#
+# Trap CTRL-C &c only in this shell so we can interrupt subprocesses.
+#
+
+trap ":" INT QUIT TSTP
+
+/bin/hostname RK3128
+
+mount -a
+
+echo /sbin/mdev > /proc/sys/kernel/hotplug
+
+mdev -s
+

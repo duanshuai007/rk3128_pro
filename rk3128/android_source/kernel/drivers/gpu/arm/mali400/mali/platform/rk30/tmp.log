@@ -1,0 +1,26 @@
+./mali_platform.h:65:struct mali_platform_drv_data {
+
+./mali_dvfs.c:24:#define dvfs_to_drv_data(dvfs) container_of(dvfs, struct mali_platform_drv_data, dvfs)
+
+./mali_dvfs.c:34:	struct mali_platform_drv_data *drv_data = dvfs_to_drv_data(dvfs);
+./mali_dvfs.c:119:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_dvfs.c:130:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_dvfs.c:141:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_dvfs.c:153:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_dvfs.c:165:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+
+./mali_dvfs.c:180:static void mali_dvfs_threshold(u32 div, struct mali_platform_drv_data *drv_data)
+
+./mali_dvfs.c:217:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_dvfs.c:271:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_platform.c:56:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_platform.c:92:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_platform.c:127:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_platform.c:138:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_platform.c:152:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_platform.c:160:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+
+./mali_platform.c:260:	struct mali_platform_drv_data *mali_drv_data;
+
+./mali_platform.c:302:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(dev);
+./mali_platform.c:319:	struct mali_platform_drv_data *drv_data = dev_get_drvdata(mali_dev);

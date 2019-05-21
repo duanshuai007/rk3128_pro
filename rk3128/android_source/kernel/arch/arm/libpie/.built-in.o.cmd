@@ -1,0 +1,1 @@
+cmd_arch/arm/libpie/built-in.o :=  arm-eabi-ld -EL    -r -o arch/arm/libpie/built-in.o arch/arm/libpie/relocate.o arch/arm/libpie/empty.o arch/arm/libpie/lib1funcs.o arch/arm/libpie/ashldi3.o arch/arm/libpie/string.o ; scripts/mod/modpost arch/arm/libpie/built-in.o

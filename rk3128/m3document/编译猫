@@ -1,0 +1,71 @@
+
+一、M3编译方法
+    uboot编译
+	uboot目录下
+	make rk3128_defconfig
+	make -j20
+    kernel编译
+	kernel目录下
+	make m3_defconfig
+	make m3.img -j20
+    android编译
+	根目录下
+	./build.sh
+	make -j20
+	./mkimage ota
+
+
+二、M3烧写方法
+    将工程中rockdev\Image-rk312x下面的boot.img misc.img recovery.img system.img拷贝到AndroidTool/rockdev/Image中
+    将工程中u-boot下面的uboot.img拷贝到AndroidTool/rockdev/Image中
+    将工程中rockdev\Image-rk312x下面的update.img拷贝到AndroidTool\rockdev\update中
+    双击AndroidTool\rockdev下的脚本mkupdate.bat 生成固件update.img
+    使用工具AndroidTool\AndroidTool_Release_v2.35\AndroidTool.exe
+    选择升级固件子菜单 点击固件 进行固件选择
+		       点击切换 是设备处于loader状态
+		       点击升级 进行固件升级操作 
+
+
+		       qp6212->wifi+bt+fm模块
+		       ns4148 功率放大器（超低emi，不需滤波器3w单声道d类）
+		       emmc KLM8G1GEME-B041  16nm  8GB  2bit MLC(NAND Flash)
+
+		       sdmmc1->wifi
+
+编译uboot
+		/home/duanshuai/m3/rom/m3/u-boot/tools/loaderimage --pack u-boot.bin uboot.img
+
+		scp duanshuai@192.168.200.202:/home/duanshuai/android_source/kernel_git/u-boot/uboot.img ./
+
+
+ 55 #include <config_distro_bootcmd.h>
+ 56 #define CONFIG_EXTRA_ENV_SETTINGS \
+ 57     ENV_MEM_LAYOUT_SETTINGS \
+ 58     "partitions=" PARTS_DEFAULT \
+ 59     BOOTENV
+
+
+带有设备书的内核启动需要实现加载内核uImage和*.dtb到内存中
+
+ext4load mmc 0:1 0x60800800 uImage
+ext4load mmc 0:1 0x80800000 m3.dtb
+bootm 0x60800800 - 0x80800000
+
+
+bootm [kernel addr] [ramdisk addr] [dtb addr]
+我们不适用ramdisk所以第二项用"-"表示没有ramdisk
+bootm 0x60800800 - 0x80800000
+
+
+busybox生成ext4格式的镜像：make_ext4fs -s -l 50331648（内存大小） -L linux ./system_m3.img(生成的镜像) ./rootfs(目标文件夹)
+50331648对应0x3000000，因为system分区在uboot被通过宏设置为0x4000000所以必须要小于0x4000000。
+
+
+git stash 
+现在你想切换分支，但是你还不想提交你正在进行中的工作；所以你储藏这些变更。为了往堆栈推送一个新的储藏，只要运行 git stash：
+
+这时，你可以方便地切换到其他分支工作；你的变更都保存在栈上。要查看现有的储藏，你可以使用 git stash list：
+
+在这个案例中，之前已经进行了两次储藏，所以你可以访问到三个不同的储藏。你可以重新应用你刚刚实施的储藏，所采用的命令就是之前在原始的 stash 命令的帮助输出里提示的：git stash apply。如果你想应用更早的储藏，你可以通过名字指定它，像这样：git stash apply stash@{2}。如果你不指明，Git 默认使用最近的储藏并尝试应用它：
+
+rockchip官方代码下载地址：linux-rockchip.org

@@ -1,0 +1,10 @@
+树莓派烧系统
+
+https://www.raspberrypi.org/downloads/noobs/ 下载noobs系统NOOBS_v2_4_0.zip
+https://www.raspberrypi.org/learning/software-guide/ 下载sd卡格式化工具 sd format 4.0
+
+格式化sd卡，选择quick format。
+将NOOBS_v2_4_0.zip解压出来的内容复制到格式化好的sd卡根目录下。
+安全弹出sd卡。
+插入树莓派中。
+启动树莓派，就自动安装了。

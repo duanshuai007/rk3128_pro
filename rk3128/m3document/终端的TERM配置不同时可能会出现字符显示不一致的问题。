@@ -1,0 +1,24 @@
+终端的TERM配置不同时可能会出现字符显示不一致的问题。
+
+这是在ssh窗口显示的内容
+        TP-LINK_ZYHKNEW1     Infra  36    270 Mbit/s  72      ▂▄▆_  WPA1 WPA2 
+        TP-LINK_ZYHKNEW      Infra  149   540 Mbit/s  67      ▂▄▆_  WPA1 WPA2 
+        Xiaomi_F446_5G       Infra  161   540 Mbit/s  57      ▂▄▆_  WPA1 WPA2 
+        360WiFi              Infra  1     135 Mbit/s  54      ▂▄__  WPA1 WPA2 
+        A906-1               Infra  11    405 Mbit/s  50      ▂▄__  WPA1 WPA2 
+        zhangmeng            Infra  11    195 Mbit/s  49      ▂▄__  WPA2      
+        A906-2               Infra  153   270 Mbit/s  42      ▂▄__  WPA1 WPA2 
+        BOSI EDU SY 5GHz     Infra  149   405 Mbit/s  29      ▂___  WPA1 WPA2 
+
+这是在M1S设备的hdmi显示器上显示的内容
+
+        TP-LINK_ZYHKNEW      Infra  149   540 Mbit/s  87      ****  WPA1 WPA2 
+        zhangmeng            Infra  11    195 Mbit/s  80      ***   WPA2      
+        Xiaomi_F446_5G       Infra  161   540 Mbit/s  67      ***   WPA1 WPA2 
+        TP-LINK_ZYHKNEW1     Infra  36    270 Mbit/s  65      ***   WPA1 WPA2 
+*       FrogsHealth-A908     Infra  149   135 Mbit/s  64      ***   WPA1 WPA2 
+        A906-1               Infra  11    405 Mbit/s  57      ***   WPA1 WPA2 
+
+两部分显示的***部分被用不同方式的编码进行分析了。
+在主机上运行echo $TERM,将ssh端的TERM设置为与主机的相同。解决问题。
+

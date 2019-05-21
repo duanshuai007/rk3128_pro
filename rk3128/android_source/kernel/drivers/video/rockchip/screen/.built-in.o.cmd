@@ -1,0 +1,1 @@
+cmd_drivers/video/rockchip/screen/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/video/rockchip/screen/built-in.o drivers/video/rockchip/screen/rk_screen.o ; scripts/mod/modpost drivers/video/rockchip/screen/built-in.o

@@ -1,0 +1,239 @@
+scripts/kconfig/list.h:127:	__list_del(entry->prev, entry->next);
+scripts/kconfig/list.h:128:	entry->next = (struct list_head*)LIST_POISON1;
+scripts/kconfig/list.h:129:	entry->prev = (struct list_head*)LIST_POISON2;
+scripts/get_maintainer.pl:1155:	    my ($entry_name, $entry_address) = parse_email($entry->[0]);
+scripts/get_maintainer.pl:1157:		&& ($role eq "" || !($entry->[1] =~ m/$role/))
+scripts/get_maintainer.pl:1159:		if ($entry->[1] eq "") {
+scripts/get_maintainer.pl:1160:		    $entry->[1] = "$role";
+scripts/get_maintainer.pl:1162:		    $entry->[1] = "$entry->[1],$role";
+scripts/get_maintainer.pl:1166:	    if ($email eq $entry->[0]
+scripts/get_maintainer.pl:1167:		&& ($role eq "" || !($entry->[1] =~ m/$role/))
+scripts/get_maintainer.pl:1169:		if ($entry->[1] eq "") {
+scripts/get_maintainer.pl:1170:		    $entry->[1] = "$role";
+scripts/get_maintainer.pl:1172:		    $entry->[1] = "$entry->[1],$role";
+scripts/get_maintainer.pl:1465:	$maintained = 1 if ($entry->[1] =~ /^(maintainer|supporter)/i);
+scripts/get_maintainer.pl:1488:		my $email = $entry->[0];
+scripts/get_maintainer.pl:1489:		my $role = $entry->[1];
+common/spl/spl.c:307:		if (boot_device == entry->boot_device)
+common/image.c:625:	return entry->lname;
+common/image.c:627:	return entry->lname + gd->reloc_off;
+common/image.c:649:	return entry->sname;
+common/image.c:651:	return entry->sname + gd->reloc_off;
+common/edid.c:73:	entry->min = value;
+common/edid.c:74:	entry->typ = value;
+common/edid.c:75:	entry->max = value;
+common/lcd.c:678:						val = entry->blue >> 3 |
+common/lcd.c:679:							entry->green >> 2 << 5 |
+common/lcd.c:680:							entry->red >> 3 << 11;
+Binary file uboot.img matches
+drivers/misc/cros_ec_sandbox.c:176:	for (size = entry->length - 1;
+drivers/misc/cros_ec_sandbox.c:177:	     size > 0 && ec->flash_data[entry->offset + size] != 0xea;
+drivers/misc/cros_ec_sandbox.c:379:					 ec->flash_data + entry->offset,
+drivers/misc/cros_ec_sandbox.c:389:			resp->offset = entry->offset;
+drivers/misc/cros_ec_sandbox.c:429:			resp->offset = entry->offset;
+drivers/misc/cros_ec_sandbox.c:430:			resp->size = entry->length;
+drivers/misc/qfw.c:41:	align = le32_to_cpu(entry->alloc.align);
+drivers/misc/qfw.c:48:	file = qemu_fwcfg_find_file(entry->alloc.file);
+drivers/misc/qfw.c:50:		printf("error: can't find file %s\n", entry->alloc.file);
+drivers/misc/qfw.c:62:	if (entry->alloc.zone == BIOS_LINKER_LOADER_ALLOC_ZONE_HIGH) {
+drivers/misc/qfw.c:68:	} else if (entry->alloc.zone == BIOS_LINKER_LOADER_ALLOC_ZONE_FSEG) {
+drivers/misc/qfw.c:76:	      file->cfg.name, size, entry->alloc.zone, align, aligned_addr);
+drivers/misc/qfw.c:83:	if (entry->alloc.zone == BIOS_LINKER_LOADER_ALLOC_ZONE_FSEG)
+drivers/misc/qfw.c:100:	uint32_t offset = le32_to_cpu(entry->pointer.offset);
+drivers/misc/qfw.c:103:	dest = qemu_fwcfg_find_file(entry->pointer.dest_file);
+drivers/misc/qfw.c:106:	src = qemu_fwcfg_find_file(entry->pointer.src_file);
+drivers/misc/qfw.c:111:	      dest->addr, src->addr, offset, entry->pointer.size, pointer);
+drivers/misc/qfw.c:113:	memcpy(&pointer, (char *)dest->addr + offset, entry->pointer.size);
+drivers/misc/qfw.c:117:	memcpy((char *)dest->addr + offset, &pointer, entry->pointer.size);
+drivers/misc/qfw.c:136:	file = qemu_fwcfg_find_file(entry->cksum.file);
+drivers/misc/qfw.c:140:	data = (uint8_t *)(file->addr + le32_to_cpu(entry->cksum.offset));
+drivers/misc/qfw.c:141:	cksum_start = (uint8_t *)(file->addr + le32_to_cpu(entry->cksum.start));
+drivers/misc/qfw.c:143:				       le32_to_cpu(entry->cksum.length));
+drivers/misc/qfw.c:188:		switch (le32_to_cpu(entry->command)) {
+drivers/pci/pci.c:314:	pci_hose_config_device(hose, dev, entry->priv[0], entry->priv[1],
+drivers/pci/pci.c:315:		entry->priv[2]);
+drivers/pci/pci-uclass.c:605:		for (id = entry->match;
+drivers/pci/pci-uclass.c:611:			drv = entry->driver;
+drivers/input/input.c:627:	for (entry = kbd_entry; entry->kbd_mask; entry++) {
+drivers/input/input.c:628:		if (!(mask & entry->kbd_mask))
+drivers/input/input.c:630:		ret = input_add_table(config, entry->left_keycode,
+drivers/input/input.c:631:				      entry->right_keycode, entry->xlate,
+drivers/input/input.c:632:				      entry->num_entries);
+drivers/core/of_extra.c:24:	entry->offset = reg[0];
+drivers/core/of_extra.c:25:	entry->length = reg[1];
+drivers/core/of_extra.c:26:	entry->used = ofnode_read_s32_default(node, "used", entry->length);
+drivers/core/of_extra.c:28:	entry->compress_algo = prop && !strcmp(prop, "lzo") ?
+drivers/core/of_extra.c:32:		entry->hash_size = strlen(prop);
+drivers/core/of_extra.c:33:	entry->hash_algo = prop ? FMAP_HASH_SHA256 : FMAP_HASH_NONE;
+drivers/core/of_extra.c:34:	entry->hash = (uint8_t *)prop;
+drivers/core/root.c:81:		if (entry->of_match)
+drivers/core/root.c:82:			entry->of_match = (const struct udevice_id *)
+drivers/core/root.c:83:				((u32)entry->of_match + gd->reloc_off);
+drivers/core/root.c:84:		if (entry->bind)
+drivers/core/root.c:85:			entry->bind += gd->reloc_off;
+drivers/core/root.c:86:		if (entry->probe)
+drivers/core/root.c:87:			entry->probe += gd->reloc_off;
+drivers/core/root.c:88:		if (entry->remove)
+drivers/core/root.c:89:			entry->remove += gd->reloc_off;
+drivers/core/root.c:90:		if (entry->unbind)
+drivers/core/root.c:91:			entry->unbind += gd->reloc_off;
+drivers/core/root.c:92:		if (entry->ofdata_to_platdata)
+drivers/core/root.c:93:			entry->ofdata_to_platdata += gd->reloc_off;
+drivers/core/root.c:94:		if (entry->child_post_bind)
+drivers/core/root.c:95:			entry->child_post_bind += gd->reloc_off;
+drivers/core/root.c:96:		if (entry->child_pre_probe)
+drivers/core/root.c:97:			entry->child_pre_probe += gd->reloc_off;
+drivers/core/root.c:98:		if (entry->child_post_remove)
+drivers/core/root.c:99:			entry->child_post_remove += gd->reloc_off;
+drivers/core/root.c:101:		if (entry->ops)
+drivers/core/root.c:102:			entry->ops += gd->reloc_off;
+drivers/core/root.c:114:		if (entry->post_bind)
+drivers/core/root.c:115:			entry->post_bind += gd->reloc_off;
+drivers/core/root.c:116:		if (entry->pre_unbind)
+drivers/core/root.c:117:			entry->pre_unbind += gd->reloc_off;
+drivers/core/root.c:118:		if (entry->pre_probe)
+drivers/core/root.c:119:			entry->pre_probe += gd->reloc_off;
+drivers/core/root.c:120:		if (entry->post_probe)
+drivers/core/root.c:121:			entry->post_probe += gd->reloc_off;
+drivers/core/root.c:122:		if (entry->pre_remove)
+drivers/core/root.c:123:			entry->pre_remove += gd->reloc_off;
+drivers/core/root.c:124:		if (entry->child_post_bind)
+drivers/core/root.c:125:			entry->child_post_bind += gd->reloc_off;
+drivers/core/root.c:126:		if (entry->child_pre_probe)
+drivers/core/root.c:127:			entry->child_pre_probe += gd->reloc_off;
+drivers/core/root.c:128:		if (entry->init)
+drivers/core/root.c:129:			entry->init += gd->reloc_off;
+drivers/core/root.c:130:		if (entry->destroy)
+drivers/core/root.c:131:			entry->destroy += gd->reloc_off;
+drivers/core/root.c:133:		if (entry->ops)
+drivers/core/root.c:134:			entry->ops += gd->reloc_off;
+drivers/core/root.c:146:		if (entry->platdata)
+drivers/core/root.c:147:			entry->platdata += gd->reloc_off;
+drivers/core/lists.c:29:		if (!strcmp(name, entry->name))
+drivers/core/lists.c:45:		if (entry->id == id)
+drivers/core/lists.c:65:			dm_warn("No match for driver '%s'\n", entry->name);
+drivers/core/lists.c:166:			ret = driver_check_compatible(entry->of_match, &id,
+drivers/core/lists.c:174:		dm_dbg("   - found match at '%s'\n", entry->name);
+drivers/core/lists.c:178:			dm_dbg("Driver '%s' refuses to bind\n", entry->name);
+drivers/core/lists.c:182:			dm_warn("Error binding driver '%s': %d\n", entry->name,
+drivers/block/blk_legacy.c:18:		if (if_type == entry->if_type)
+drivers/block/blk_legacy.c:33:		if (!strcmp(if_typename, entry->if_typename))
+drivers/usb/host/xhci-mem.c:559:		xhci_writeq(&entry->seg_addr, trb_64);
+drivers/usb/host/xhci-mem.c:560:		entry->seg_size = cpu_to_le32(TRBS_PER_SEGMENT);
+drivers/usb/host/xhci-mem.c:561:		entry->rsvd = 0;
+drivers/usb/host/usb-uclass.c:493:		for (id = entry->match; id->match_flags; id++) {
+drivers/usb/host/usb-uclass.c:497:			drv = entry->driver;
+drivers/net/pcnet.c:449:		status = readw(&entry->status);
+drivers/net/pcnet.c:467:	writew(-pkt_len, &entry->length);
+drivers/net/pcnet.c:468:	writel(0, &entry->misc);
+drivers/net/pcnet.c:469:	writel(addr, &entry->base);
+drivers/net/pcnet.c:470:	writew(0x8300, &entry->status);
+drivers/net/pcnet.c:495:		status = readw(&entry->status);
+drivers/net/pcnet.c:515:			pkt_len = (readl(&entry->msg_length) & 0xfff) - 4;
+drivers/net/pcnet.c:530:		writew(status, &entry->status);
+drivers/net/armada100_fec.c:285:		if (!(entry->lo & HTEVALID)) {
+drivers/net/armada100_fec.c:289:			if (((entry->lo & 0xfffffff8) == (newlo & 0xfffffff8))
+drivers/net/armada100_fec.c:290:					&& (entry->hi == newhi))
+drivers/net/armada100_fec.c:299:	if (((entry->lo & 0xfffffff8) != (newlo & 0xfffffff8)) &&
+drivers/net/armada100_fec.c:300:		(entry->hi != newhi) && del)
+drivers/net/armada100_fec.c:317:		entry->hi = 0;
+drivers/net/armada100_fec.c:318:		entry->lo = 0;
+drivers/net/armada100_fec.c:320:		entry->hi = newhi;
+drivers/net/armada100_fec.c:321:		entry->lo = newlo;
+drivers/mmc/mmc_legacy.c:100:		if (entry->next != &mmc_devices) {
+cmd/bootmenu.c:62:	int reverse = (entry->menu->active == entry->num);
+cmd/bootmenu.c:65:	 * Move cursor to line where the entry will be drown (entry->num)
+cmd/bootmenu.c:68:	printf(ANSI_CURSOR_POSITION, entry->num + 4, 1);
+cmd/bootmenu.c:75:	puts(entry->title);
+cmd/bootmenu.c:279:		entry->title = malloc(len + 1);
+cmd/bootmenu.c:280:		if (!entry->title) {
+cmd/bootmenu.c:284:		memcpy(entry->title, option, len);
+cmd/bootmenu.c:285:		entry->title[len] = 0;
+cmd/bootmenu.c:288:		entry->command = malloc(len + 1);
+cmd/bootmenu.c:289:		if (!entry->command) {
+cmd/bootmenu.c:290:			free(entry->title);
+cmd/bootmenu.c:294:		memcpy(entry->command, sep + 1, len);
+cmd/bootmenu.c:295:		entry->command[len] = 0;
+cmd/bootmenu.c:297:		sprintf(entry->key, "%d", i);
+cmd/bootmenu.c:299:		entry->num = i;
+cmd/bootmenu.c:300:		entry->menu = menu;
+cmd/bootmenu.c:301:		entry->next = NULL;
+cmd/bootmenu.c:321:		entry->title = strdup("U-Boot console");
+cmd/bootmenu.c:322:		if (!entry->title) {
+cmd/bootmenu.c:327:		entry->command = strdup("");
+cmd/bootmenu.c:328:		if (!entry->command) {
+cmd/bootmenu.c:329:			free(entry->title);
+cmd/bootmenu.c:334:		sprintf(entry->key, "%d", i);
+cmd/bootmenu.c:336:		entry->num = i;
+cmd/bootmenu.c:337:		entry->menu = menu;
+cmd/bootmenu.c:338:		entry->next = NULL;
+cmd/bootmenu.c:445:	menu = entry->menu;
+cmd/nvedit.c:661:	if (entry->callback == NULL)
+cmd/nvedit.c:670:		if (entry->callback == clbkp->callback + gd->reloc_off)
+cmd/nvedit.c:672:		if (entry->callback == clbkp->callback)
+cmd/nvedit.c:679:		printf("\t%-20s %p\n", entry->key, entry->callback);
+cmd/nvedit.c:681:		printf("\t%-20s %-20s\n", entry->key, clbkp->name);
+cmd/nvedit.c:741:	if (entry->flags == 0)
+cmd/nvedit.c:745:		(entry->flags & ENV_FLAGS_VARTYPE_BIN_MASK);
+cmd/nvedit.c:746:	access = env_flags_parse_varaccess_from_binflags(entry->flags);
+cmd/nvedit.c:747:	printf("\t%-20s %-20s %-20s\n", entry->key,
+Binary file u-boot-nodtb.bin matches
+env/callback.c:85:	entry->callback = NULL;
+env/flags.c:402: * form to be stored in the environment entry->flags field.
+env/flags.c:446:	entry->flags = 0;
+env/env.c:21:		if (loc == entry->location)
+arch/sandbox/cpu/os.c:346:		next = malloc(sizeof(*node) + strlen(entry->d_name) + 1);
+arch/sandbox/cpu/os.c:347:		if (dirlen + strlen(entry->d_name) > len) {
+arch/sandbox/cpu/os.c:348:			len = dirlen + strlen(entry->d_name);
+arch/sandbox/cpu/os.c:358:		strcpy(next->name, entry->d_name);
+arch/sandbox/cpu/os.c:359:		switch (entry->d_type) {
+arch/arm/mach-imx/cmd_bmode.c:93:	if (entry->usage) {
+arch/arm/mach-imx/cmd_bmode.c:94:		free(entry->usage);
+arch/arm/mach-imx/cmd_bmode.c:95:		entry->usage = NULL;
+arch/arm/mach-imx/cmd_bmode.c:104:		entry->usage = dest;
+arch/arm/mach-rockchip/resource_img.c:124:	if (memcmp(entry->tag, ENTRY_TAG, ENTRY_TAG_SIZE)) {
+arch/arm/mach-rockchip/resource_img.c:133:	strcpy(file->name, entry->name);
+arch/arm/mach-rockchip/resource_img.c:134:	file->f_offset = entry->f_offset;
+arch/arm/mach-rockchip/resource_img.c:135:	file->f_size = entry->f_size;
+arch/x86/cpu/mp_init.c:174:	entry->index = index;
+arch/x86/cpu/mp_init.c:175:	entry->lo = msr.lo;
+arch/x86/cpu/mp_init.c:176:	entry->hi = msr.hi;
+arch/x86/lib/mrccache.c:49:	base_addr = entry->base + entry->offset;
+arch/x86/lib/mrccache.c:50:	end_addr = base_addr + entry->length;
+arch/x86/lib/mrccache.c:93:	base_addr = entry->base + entry->offset;
+arch/x86/lib/mrccache.c:94:	end_addr = base_addr + entry->length;
+arch/x86/lib/mrccache.c:121:	base_addr = entry->base + entry->offset;
+arch/x86/lib/mrccache.c:140:		      entry->length, entry->offset);
+arch/x86/lib/mrccache.c:142:		ret = spi_flash_erase_dm(sf, entry->offset, entry->length);
+arch/x86/lib/mrccache.c:151:	offset = (ulong)cache - base_addr + entry->offset;
+arch/x86/lib/mrccache.c:208:	entry->base = reg[0];
+arch/x86/lib/mrccache.c:217:	entry->offset = reg[0];
+arch/x86/lib/mrccache.c:218:	entry->length = reg[1];
+arch/x86/lib/sfi.c:92:		entry->apic_id = plat->cpu_id;
+arch/x86/lib/sfi.c:111:	entry->phys_addr = IO_APIC_ADDR;
+arch/x86/lib/sfi.c:125:	entry->oem_revision = 1;
+arch/x86/lib/sfi.c:126:	entry->creator_id = 1;
+arch/x86/lib/sfi.c:127:	entry->creator_revision = 1;
+Binary file u-boot.bin matches
+Binary file disk/part.o matches
+disk/part.c:35:        printf("--->entry->part_type = %d\r\n", entry->part_type);
+disk/part.c:36:		if (part_type == entry->part_type)
+disk/part.c:228:		ret = entry->test(dev_desc);
+disk/part.c:229:		debug("%s: try '%s': ret=%d\n", __func__, entry->name, ret);
+disk/part.c:231:			dev_desc->part_type = entry->part_type;
+Binary file disk/built-in.o matches
+Binary file u-boot matches
+Binary file u-boot-dtb.bin matches
+lib/efi/efi_info.c:30:	while (entry->type != EFIET_END) {
+lib/efi/efi_info.c:31:		if (entry->type == type) {
+lib/efi/efi_info.c:32:			if (entry->addr)
+lib/efi/efi_info.c:33:				*datap = map_sysmem(entry->addr, entry->size);
+lib/efi/efi_info.c:36:			*sizep = entry->size;
+lib/efi/efi_info.c:39:		entry = (struct efi_entry_hdr *)((ulong)entry + entry->link);
+include/linux/list.h:100:	__list_del(entry->prev, entry->next);
+include/linux/list.h:101:	entry->next = LIST_POISON1;
+include/linux/list.h:102:	entry->prev = LIST_POISON2;
+include/linux/list.h:134:	__list_del(entry->prev, entry->next);
+include/linux/list.h:212:	struct list_head *new_first = entry->next;
+include/linux/list.h:216:	entry->next = list;
+include/env_flags.h:167: * These are the binary flags used in the environment entry->flags variable to

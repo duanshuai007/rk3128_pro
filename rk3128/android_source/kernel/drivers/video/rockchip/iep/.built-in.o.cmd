@@ -1,0 +1,1 @@
+cmd_drivers/video/rockchip/iep/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/video/rockchip/iep/built-in.o drivers/video/rockchip/iep/hw_iep_reg.o drivers/video/rockchip/iep/iep_drv.o ; scripts/mod/modpost drivers/video/rockchip/iep/built-in.o

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cp -r arm-2014.05/arm-none-linux-gnueabi/libc/lib/* ./rootfs/lib/
+make_ext4fs -s -l 50331648 -L linux ./system_m3.img ./rootfs

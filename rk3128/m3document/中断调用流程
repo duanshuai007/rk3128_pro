@@ -1,0 +1,265 @@
+##中断调用流程
+在`start_kernel`中调用了`tick_init`来初始化定时器的中断
+在下面又调用了`setup_arch`，在`setup_arch`中有条件编译指令
+
+```
+#ifdef CONFIG_MULTI_IRQ_HANDLER
+    handle_arch_irq = mdesc->handle_irq;
+#endif
+```
+
+```
+其中的mdesc是通过以下函数获取到的。
+    mdesc = setup_machine_fdt(__atags_pointer);
+    if (!mdesc)
+        mdesc = setup_machine_tags(machine_arch_type);
+其中的machine_arch_type就是MACH_TYPE_S5P4418
+在arch/arm/mach-s5p4418/cpu.c中
+MACHINE_START(S5P4418, CFG_SYS_CPU_NAME)
+    .atag_offset    =  0x00000100,
+    .fixup          =  cpu_fixup,
+    .map_io         =  cpu_map_io,
+    .init_irq       =  nxp_cpu_init_irq,
+#ifdef CONFIG_ARM_GIC   
+    .handle_irq     =  gic_handle_irq,
+#else   
+    .handle_irq     =  vic_handle_irq,
+#endif  
+    .timer          = &nxp_cpu_sys_timer,
+    .init_machine   =  cpu_init_machine,
+#if defined CONFIG_CMA && defined CONFIG_ION
+    .reserve        = cpu_mem_reserve,
+#endif
+MACHINE_END
+```
+
+所以这个`handle_arch_irq`最后指向的就是`gic_handle_irq`。
+
+而在`arch/arm/kernel/entry-armv.S`中，可以看到在`irq_handler`宏的实现
+ 
+```
+    .macro  irq_handler
+#ifdef CONFIG_MULTI_IRQ_HANDLER
+    ldr r1, =handle_arch_irq
+    mov r0, sp
+    adr lr, BSYM(9997f)
+    ldr pc, [r1] 
+#else
+    arch_irq_handler_default
+#endif
+9997:
+    .endm
+```
+中断发生时通过调用宏irq_handler来调用handle_arch_irq实现了中断功能。
+
+在gic.c中gic_handle_irq函数内通过读取GIC_CPU_INTACK获取irqnr，然后通过判断irqnr的值来判断程序执行的那种中断
+irqnr大于15则执行handle_IRQ,小于16则执行handle_IPI.
+
+```
+void handle_IRQ(unsigned int irq, struct pt_regs *regs)
+{
+    struct pt_regs *old_regs = set_irq_regs(regs);
+
+    irq_enter();
+
+    /*  
+     * Some hardware gives randomly wrong interrupts.  Rather
+     * than crashing, do something sensible.
+     */
+    if (unlikely(irq >= nr_irqs)) {
+        if (printk_ratelimit())
+            printk(KERN_WARNING "Bad IRQ%u\n", irq);
+        ack_bad_irq(irq);
+    } else {
+        generic_handle_irq(irq);
+    }   
+
+    /* AT91 specific workaround */
+    irq_finish(irq);
+
+    irq_exit();
+    set_irq_regs(old_regs);
+}
+```
+
+调用了kernel/irq/irqdesc.c 中的 generic_handle_irq通过irq_to_desc来获取irq desc，
+
+```
+int generic_handle_irq(unsigned int irq)
+{
+    struct irq_desc *desc = irq_to_desc(irq);
+
+    if (!desc)
+        return -EINVAL;
+    generic_handle_irq_desc(irq, desc);
+    return 0;
+}
+```
+
+
+其中的irq_to_desc实现为
+	
+```
+	struct irq_desc *irq_to_desc(unsigned int irq)
+	{
+	    return (irq < NR_IRQS) ? irq_desc + irq : NULL;
+	}
+```
+	
+	NR_IRQS在不同的平台下具有不同的数值，在S5P4418下等于IRQ_TOTAL_MAX_COUNT，在arch/arm/mach-s5p4418/include/mach/s5p4418_irq.h中
+	有对该宏的定义#define IRQ_TOTAL_MAX_COUNT     (IRQ_SYSTEM_END + IRQ_SYSTEM_RESERVED)该值为256+32 = 287.
+	程序返回值为irq_desc类型的结构体指针.
+	在kernel/irq/irqdesc.c 中能够找到irq_desc的定义
+	struct irq_desc irq_desc[NR_IRQS] __cacheline_aligned_in_smp = {
+	    [0 ... NR_IRQS-1] = {
+	        .handle_irq = handle_bad_irq,
+	        .depth      = 1,
+	        .lock       = __RAW_SPIN_LOCK_UNLOCKED(irq_desc->lock),
+	    }
+	};
+该函数内调用`include/linux/irqdesc.h `中的 `generic_handle_irq_desc`.该函数实现为
+
+```
+static inline void generic_handle_irq_desc(unsigned int irq, struct irq_desc *desc)
+{
+    desc->handle_irq(irq, desc);
+}
+```
+
+可以看出通过desc的中断句柄来实现中断调用的，到此结束。
+
+
+
+2.设置中断句柄
+
+```
+在start_kernel中调用了tick_init来初始化定时器的中断
+在tick_init中只有一条指令clockevents_register_notifier(&tick_notifier);
+其中tick_notifier的内容是
+static struct notifier_block tick_notifier = { 
+    .notifier_call = tick_notify,
+};
+clockevents_register_notifier中调用raw_notifier_chain_register来把参数加入到clockevent_chain中
+函数内部继续调用notifier_chain_register.
+
+在tick_notify中调用了tick_check_new_device
+在tick_check_new_device中调用tick_setup_device
+在tick_setup_device中根据不同的定时器模式调用不同的设置函数
+    if (td->mode == TICKDEV_MODE_PERIODIC)
+        tick_setup_periodic(newdev, 0); 
+    else
+        tick_setup_oneshot(newdev, handler, next_event);
+在tick_setup_periodic中调用tick_set_periodic_handler设置中断执行的句柄。
+static inline void tick_set_periodic_handler(struct clock_event_device *dev, int broadcast)
+{
+    dev->event_handler = tick_handle_periodic;
+}
+```
+
+
+
+3.中断句柄怎么于irq_desc链接到的。
+
+```
+在timer_initialize中分别调用了
+static void __init timer_initialize(void)
+{
+    pr_debug("%s\n", __func__);
+    timer_source_init(CFG_TIMER_SYS_TICK_CH);
+    timer_event_init(CFG_TIMER_EVT_TICK_CH);
+    timer_twd_init();
+    return;
+}
+三个函数分别将Timer0初始化为时钟源，Timer1初始化为定时器中断，privateTimer初始化。
+在timer_twd_init中调用了twd_local_timer_common_register
+该函数的传入参数是基于硬件地址的外设资源的地址包括baseaddress和irqaddress
+参数为：
+struct twd_local_timer twd_local_timer __initdata = {
+	.res = {
+		{
+			.start = SCU_PVT_PHYBASE,
+			.end = .start + 0x10 - 1,
+			.name = NULL,
+			.flags = IORESOURCE_IO,
+		},
+		{
+			.start = IRQ_LOCALTIMER,
+			.end = .srart + 1 - 1,
+			.name = NULL,
+			.flags = IORESOURCE_IRQ,
+		}
+	}
+}
+在twd_local_timer_register中，首先将中断号复制到twd_ppi中，然后通过ioremap获取物理地址对应的虚拟地址空间。
+然后调用twd_local_timer_common_register。在twd_local_timer_common_register中调用request_percpu_irq注册中断，
+在request_percpu_irq中最终调用__setup_irq注册中断句柄
+request_percpu_irq(twd_ppi, twd_handler, "twd", twd_evt);
+中断句柄为twd_handler,
+static irqreturn_t twd_handler(int irq, void *dev_id)
+{
+    struct clock_event_device *evt = *(struct clock_event_device **)dev_id;
+
+    if (twd_timer_ack()) {
+        evt->event_handler(evt);
+        return IRQ_HANDLED;
+    }   
+
+    return IRQ_NONE;
+}
+在request_percpu_irq函数内
+int request_percpu_irq(unsigned int irq, irq_handler_t handler,
+               const char *devname, void __percpu *dev_id)
+{
+    struct irqaction *action;
+    struct irq_desc *desc;
+    int retval;
+
+    if (!dev_id)
+        return -EINVAL;
+
+    desc = irq_to_desc(irq);
+    if (!desc || !irq_settings_can_request(desc) ||
+        !irq_settings_is_per_cpu_devid(desc))
+        return -EINVAL;
+
+    action = kzalloc(sizeof(struct irqaction), GFP_KERNEL);
+    if (!action)
+        return -ENOMEM;
+
+    action->handler = handler;
+    action->flags = IRQF_PERCPU | IRQF_NO_SUSPEND;
+    action->name = devname;
+    action->percpu_dev_id = dev_id;
+
+    chip_bus_lock(desc);
+    retval = __setup_irq(irq, desc, action);
+    chip_bus_sync_unlock(desc);
+
+    if (retval)
+        kfree(action);
+
+    return retval;
+}
+创建了一个irqaction，将handler,devname,devid和中断标志赋值给irqaction，然后调用了__setup_irq。
+然后调用了local_timer_register来把twd_timer_setup和twd_timer_stop函数注册,该函数内部实现的代码
+int local_timer_register(struct local_timer_ops *ops)
+{
+    if (lt_ops)
+        return -EBUSY;
+    lt_ops = ops;
+    return 0;
+}
+static struct local_timer_ops twd_lt_ops __cpuinitdata = {
+    .setup  = twd_timer_setup,
+    .stop   = twd_timer_stop,
+};
+
+最后：
+在这里就把twd_handler填充进了irq_desc结构体中，当中断发生时通过中断向量表执行到gic.c中的中断处理函数gic_handle_irq，最后
+执行到twd_handler。
+
+tick_handle_periodic都干了什么？
+在函数内首先获取cpu号，然后调用了tick_periodic，然后判断定时器模式，如果是oneshot模式还需要重新设置tick的参数
+在tick_periodic中，通过添加打印信息能够看出1，2，3核心都在执行中断。但是tick_do_timer_cpu被设置为0，所以只有0核心真正的执行
+了中断。
+```

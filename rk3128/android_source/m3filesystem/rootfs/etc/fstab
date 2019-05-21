@@ -1,0 +1,6 @@
+proc    /proc           proc    defaults    0   0
+sysfs   /sys            sysfs   defaults    0   0
+usbfs   /proc/bus/usb   usbfs   defaults    0   0
+ramfs   /tmp            ramfs   defaults    0   0
+ramfs   /var            ramfs   defaults    0   0
+tmpfs   /dev/shm        tmpfs   defaults,size=100M  0   0

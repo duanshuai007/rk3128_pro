@@ -1,0 +1,60 @@
+
+```
+static int __init timer_source_init(int ch)
+{
+	struct clocksource *cs = &tm_source_clk;
+	...
+	clocksource_register_hz(cs, info->rate);
+	...
+}
+
+static inline int clocksource_register_hz(struct clocksource *cs, u32 hz)
+{
+    return __clocksource_register_scale(cs, 1, hz);
+}
+
+int __clocksource_register_scale(struct clocksource *cs, u32 scale, u32 freq)
+{
+
+    /* Initialize mult/shift and max_idle_ns */
+    __clocksource_updatefreq_scale(cs, scale, freq);
+
+    /* Add clocksource to the clcoksource list */
+    mutex_lock(&clocksource_mutex);
+    clocksource_enqueue(cs);				//把clock设备加入clocksource_list
+    clocksource_enqueue_watchdog(cs);		//把clock设备也挂载到watchdog上，watch会每隔0.5秒对齐所有挂在的clock设备进行一次检查，
+    										//如果检查不合格，会设置其rating值，rating小于100代表该是中设备精度极差，不能作为时钟源。
+    clocksource_select();					//选择一个精度最好（rating值最大的）的时钟源
+    mutex_unlock(&clocksource_mutex);
+    return 0;
+}
+EXPORT_SYMBOL_GPL(__clocksource_register_scale);
+
+clocksource结构中有一个rating字段，代表着该时钟源的精度范围，它的取值范围如下：
+1--99： 不适合于用作实际的时钟源，只用于启动过程或用于测试；
+100--199：基本可用，可用作真实的时钟源，但不推荐；
+200--299：精度较好，可用作真实的时钟源；
+300--399：很好，精确的时钟源；
+400--499：理想的时钟源，如有可能就必须选择它作为时钟源；
+
+static void clocksource_enqueue_watchdog(struct clocksource *cs)
+{
+    if (cs->flags & CLOCK_SOURCE_IS_CONTINUOUS)
+        cs->flags |= CLOCK_SOURCE_VALID_FOR_HRES;
+}
+
+在系统启动的初始阶段，会有多个时钟源进行注册，使用定时器提供低精度计时，采用周期触发模式，直到框架层满足条件后开启高精度时钟源来替换低精度时钟源，并转为单触发模式。
+clocksource用来给timekeeper提供硬件支持，提供一个按照给定的周期不断递增的周期计数，
+clockevent会转化成为tickdevice最后会成为某种类型的tickdevice(oneshot/periodic/broadcast)
+在4418中，定时器的时钟是150MHZ，经过MUX=0，prescaler=15，最后得到的是1KHz的定时周期，
+
+lock source用于为linux内核提供一个时间基线，如果你用linux的date命令获取当前时间，内核会读取当前的clock source，转换并返回合适的时间单位给用户空间。在硬件层，它通常实现为一个由固定时钟频率驱动的计数器，计数器只能单调地增加，直到溢出为止。时钟源是内核计时的基础，系统启动时，内核通过硬件RTC获得当前时间，在这以后，在大多数情况下，内核通过选定的时钟源更新实时时间信息（墙上时间），而不再读取RTC的时间。
+
+
+1.2  read回调函数
+时钟源本身不会产生中断，要获得时钟源的当前计数，只能通过主动调用它的read回调函数来获得当前的计数值，注意这里只能获得计数值，也就是所谓的cycle，要获得相应的时间，必须要借助clocksource的mult和shift字段进行转换计算。
+
+系统中可能同时会注册对个clocksource，各个clocksource的精度和稳定性各不相同，为了筛选这些注册的clocksource，内核启用了一个定时器用于监控这些clocksource的性能，定时器的周期设为0.5秒：
+
+当然，如果平台级的代码在初始化时也会注册真正的硬件clocksource，所以经过clocksource_select()函数后，curr_clocksource将会被设为最合适的clocksource。如果clocksource_select函数认为需要切换更好的时钟源，它会通过timekeeping_notify通知timekeeping系统，使用新的clocksource进行时间计数和更新操作。
+```

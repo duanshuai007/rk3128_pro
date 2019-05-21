@@ -1,0 +1,1 @@
+cmd_drivers/video/rockchip/rga2/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/video/rockchip/rga2/built-in.o drivers/video/rockchip/rga2/rga2.o ; scripts/mod/modpost drivers/video/rockchip/rga2/built-in.o

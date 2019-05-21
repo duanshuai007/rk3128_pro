@@ -1,0 +1,45 @@
+
+Github下的项目可能很大，里面有很多的子文件夹，我们可能只需要使用某个子目录下的资源，可以不用下载完整的repo就能使用。
+
+例如，我想下载这个repo中的字典文件：https://github.com/starnightcyber/findSubDomains/tree/master/dict
+
+安装svn
+
+sudo apt-get install subversion
+下载子目录
+
+　　点击进入我们要下载的dict，url地址为：https://github.com/starnightcyber/findSubDomains/tree/master/dict
+
+　　将tree/master用trunk替换，即https://github.com/starnightcyber/findSubDomains/trunk/dict
+
+　　使用命令如下：
+
+复制代码
+root@ubuntu-s-1vcpu-1gb-sfo2-01:~/starnight# svn checkout https://github.com/starnightcyber/findSubDomains/trunk/dict
+A    dict/dns_servers.txt
+A    dict/next_sub.txt
+A    dict/next_sub_full.txt
+A    dict/subnames.txt
+A    dict/subnames_full.txt
+Checked out revision 17.
+root@ubuntu-s-1vcpu-1gb-sfo2-01:~/starnight# ls
+dict
+复制代码
+　　这样，我们就下载好了我们只需要使用的字典dict，这种方式尤其是在项目很大的时候，而网速有不给力的情况下，特别方便。
+
+下载单个文件
+
+　　上面提到的方法只适合于下载子目录，并不能用于下载单个文件
+
+　　比如我要下载这个文件: https://github.com/starnightcyber/findSubDomains/blob/master/dict/subnames.txt
+
+　　先点击raw ->
+
+
+
+　　地址栏跳转:https://raw.githubusercontent.com/starnightcyber/findSubDomains/master/dict/subnames.txt
+
+　　这样就能通过常用的命令行下载工具wget了：
+
+复制代码
+root@ubuntu-s-1vcpu-1gb-sfo2-01:~/starnight# wget https://raw.githubusercontent.com/starnightcyber/findSubDomains/master/dict/subnames.txt

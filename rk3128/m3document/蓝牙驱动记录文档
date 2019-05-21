@@ -1,0 +1,295 @@
+brcm_patchram_plus --tosleep=200000 --no2bytes --enable_hci --patchram=/system/vendor/firmware/bcm43438a0.hcd /dev/ttyS0 &
+
+网络问题：ping ipaddr时出现权限不够的错误，解决方式如下：
+这个问题终于解决了，望以后遇到同样问题可以参考一下：
+修改 /etc/group,添加如下代码：
+inet:x:3003:root
+net_raw:x:3004:root
+然后命令行输入：
+gpasswd -a username inet
+重启就行。
+该问题是由于在内核配置的时候打开了：
+CONFIG_ANDROID_PARANOID_NETWORK
+请在关闭该宏。
+
+
+更新开发板的服务器时间：
+ntpdate asia.pool.ntp.org
+hwclock --systohc
+
+systemctl start bluetooth
+
+
+ubuntu修改源
+修改/etc/apt/sources.list文件
+apt-get update
+apt-get upgrade
+
+安装ping工具
+apt-get install iputils-ping
+apt-get install vim
+apt-get install tftp
+apt-get install bluez
+apt-get install rfkill
+apt-get install network-maneger		安装nmcli网络管理工具
+
+更新源后apt-get upgrade出现nmcli工具丢失，使用wpa工具配置网络，
+wpa_supplicant -i wlan0 -Dnl80211 -c /etc/wpa_supplicant.conf&
+在etc目录下新增wpa配置文件wpa_supplicant.conf
+其内容为
+ctrl_interface=/var/run/wpa_supplicant
+eapol_version=1
+ap_scan=1
+fast_reauth=1
+network={
+        ssid="FrogsHealth-A908-2G"
+        #psk="FrogsHealth@1"
+        psk=5c8389548c63a04e11511e4cf4b881b42fc0c1cd84fc47703a5a017692976d29
+}
+使用route add default gw 192.168.200.1 添加网关
+
+brcm_patchram_plus刷固件一直不成功，执行rfkill unblock bluetooth
+
+hciattach /dev/ttyS0 bcm43xx 115200 flow -t 10
+
+安装bluez所需要的依赖包：apt-get build-dep bluez
+
+
+sdptool browse 设备地址
+找到OBEX Object Push对应的channel号。
+通过
+obexftp --nopath --noconn --uuid  none --bluetooth  6C:AB:31:E7:2C:BF --channel 6 -p 123.txt
+
+通过树莓派的蓝牙接收文件
+https://www.raspberrypi.org/forums/viewtopic.php?p=963751#p963751
+树莓派论坛
+https://www.raspberrypi.org/forums/search.php?keywords=bluetooth&fid%5B0%5D=91&sid=6e95e0e1e1e9c58389eaec481bf0f41c
+
+
+
+如果想要将obexpush在后台运行，按照以下步骤配置。
+修改/etc/systemd/system/dbus-org.bluez.service
+在这句最后加上“-C” 
+ExecStart=/usr/lib/bluetooth/bluetoothd -C
+新建文件：/etc/systemd/system/obexpush.service
+文件内容为：
+[Unit]
+Description=OBEX Push service
+After=bluetooth.service
+Requires=bluetooth.service
+[Service]
+ExecStart=/usr/bin/obexpushd -B -o /ble_receive -n
+[Install]
+WantedBy=multi-user.target
+执行命令：
+systemctl enable obexpush
+重启系统
+
+
+查看ubuntu已安装的驱动文件
+dpkg -l | grep blue
+apt-get remove --purge bluez
+
+
+在ssh服务器上添加key：ssh-keygen -R 192.168.200.33
+
+树莓派密码raspberry
+
+apt-get 下载的软件包都在/var/cache/apt/archives目录下,可以使用apt-get clean晴空
+
+
+启动bluealsa验证是否解决问题
+apt-get install pulseaudio-module-bluetooth 安装该功能验证是否能够解决问题
+
+
+blueman 说明文件
+https://wiki.archlinux.org/index.php/Bluetooth_(简体中文)#Blueman
+将你的电脑音响用作蓝牙音响
+这么做可以将你电脑上的外放设备用作蓝牙音响，通过蓝牙为你的手机提供外放。
+将以下内容添加到配置文件 /etc/bluetooth/audio.conf (如果文件不存在，创建一个):
+[General]
+Enable=Source
+
+
+
+蓝牙音响
+
+将你的电脑音响用作蓝牙音响
+这么做可以将你电脑上的外放设备用作蓝牙音响，通过蓝牙为你的手机提供外放。
+
+将以下内容添加到配置文件 /etc/bluetooth/audio.conf (如果文件不存在，创建一个):
+
+[General]
+Enable=Source
+阅读更多:
+
+Bluetooth headset
+https://gist.github.com/joergschiller/1673341
+http://www.lightofdawn.org/blog/?viewDetailed=00031
+音频
+如要使用蓝牙耳机或蓝牙音响设备，你需要安装 pulseaudio-bluetooth 软件包。
+
+请参阅 Bluetooth headset (简体中文) 查看更多关于蓝牙耳机、音响设备及相关问题排查的信息。
+
+如要让你的电脑能够作为A2DP sink被探测到（可以作为蓝牙音响播放来自于你手机的音乐），在 /etc/bluetooth/audio.conf配置文件的[General]栏添加以下内容：Enable=Source,Sink,Media,Socket
+
+
+/home/firefly/bluez/bin/hciattach /dev/ttyS0 bcm43xx 921600 noflow -
+/home/firefly/bluez/bin/hciattach /dev/ttyS0 bcm43xx 115200 noflow -
+/home/firefly/bluez/bin/hciattach /dev/ttyS0 bcm43xx 460800 noflow -
+/home/firefly/bluez/bin/hciattach -s 230400 /dev/ttyS0 bcm43xx 230400 noflow -
+
+pactl list cards
+pacmd set-card-profile 1 a2dp_sink
+pactl list sinks
+pacmd set-default-sink 2
+pactl list sources
+pacmd set-default-source 3
+
+pactl info:可以得到控制信息
+
+/usr/bin/hciattach /dev/ttyAMA0 bcm43xx 921600 noflow -
+
+
+安装bluez-5.43版本工具
+sudo  apt-get install debhelper dh-autoreconf flex bison libdbus-glib-1-dev libglib2.0-dev  libcap-ng-dev libudev-dev libreadline-dev libical-dev check dh-systemd libebook1.2-dev
+wget https://launchpad.net/ubuntu/+archive/primary/+files/bluez_5.43.orig.tar.xz
+wget https://launchpad.net/ubuntu/+archive/primary/+files/bluez_5.43-0ubuntu1.debian.tar.xz
+wget https://launchpad.net/ubuntu/+archive/primary/+files/bluez_5.43-0ubuntu1.dsc
+tar xf bluez_5.43.orig.tar.xz
+cd bluez-5.43
+tar xf ../bluez_5.43-0ubuntu1.debian.tar.xz
+* debchange和debuild工具都在devscripts包内。
+debchange --local=~lorenzen 'Backport to Xenial'
+debuild -b -j4
+cd ..
+sudo dpkg -i *.deb
+
+How To Connect Bluetooth Headset Or Speaker To Raspberry Pi 3：
+http://youness.net/raspberry-pi/how-to-connect-bluetooth-headset-or-speaker-to-raspberry-pi-3
+
+
+在Ubuntu上安装sox：
+$ sudo apt-get install sox libsox-fmt-all
+libsox-fmt-all包含mp3的解码器和其它格式的解码器。
+
+1) Downloaded http://sourceforge.net/projects/lame/files/lame/3.99/lame-3.99.5.tar.gz
+     untar
+     ./configure
+     make
+     make install
+2) on the shell: lame --decode gw.mp3 gw_con.wav
+3) aplay gw_con.wav and it works !!  
+--Paridhi
+
+dbus-daemon --fork --session --address=unix:abstract=/tmp/dbus-owdbnUlnQu
+
+将image_filer目录整体放入android源码根目录/external下。
+在android源码根目录执行source build/envsetup.sh && lunch 9后，执行mmm external/Image-Filer
+编译成功后生成cd/otaconvert
+
+adb环境下出现could not open 1234567.png, Permission denied，通过在root用户下执行mount -o remount,rw /system来解决问题。
+
+###网络问题：ping ipaddr时出现权限不够的错误，解决方式如下：
+
+```
+这个问题终于解决了，望以后遇到同样问题可以参考一下：
+修改 /etc/group,添加如下代码：
+inet:x:3003:root
+net_raw:x:3004:root
+然后命令行输入：
+gpasswd -a username inet
+重启就行。
+该问题是由于在内核配置的时候打开了：
+CONFIG_ANDROID_PARANOID_NETWORK
+请在关闭该宏。
+```
+
+###更新开发板的服务器时间：
+
+```
+ntpdate asia.pool.ntp.org
+hwclock --systohc
+```
+
+###ubuntu修改源
+
+```
+修改/etc/apt/sources.list文件
+apt-get update
+apt-get upgrade
+```
+
+###安装ping工具
+
+```
+apt-get install iputils-ping
+apt-get install vim
+apt-get install tftp
+apt-get install bluez
+apt-get install libbluetooth3     //安装bluealsa工具
+apt-get install bluealsa
+apt-get install rfkill
+apt-get install network-maneger   安装nmcli网络管理工具
+```
+* 如果更新源后`apt-get upgrade`出现`nmcli`工具丢失，可以使用`wpa`工具配置网络。
+
+* 使用`route add default gw 192.168.200.1`添加网关
+
+
+* 安装bluez所需要的依赖包：apt-get build-dep bluez
+
+
+#####树莓派网站上的文件
+* https://www.raspberrypi.org/forums/viewtopic.php?p=963751#p963751
+* https://www.raspberrypi.org/forums/search.php？keywords=bluetooth&fid%5B0%5D=91&sid=6e95e0e1e1e9c58389eaec481bf0f41c
+```
+查看ubuntu已安装的驱动文件
+dpkg -l | grep blue
+apt-get remove --purge bluez
+在ssh服务器上添加key：ssh-keygen -R 192.168.200.33
+树莓派密码raspberry
+apt-get 下载的软件包都在/var/cache/apt/archives目录下
+可以使用apt-get clean清空缓存文件夹
+```
+
+
+使音乐通过本机声卡播放
+amixer controls
+amixer cset numid=18,iface=MIXER,name='Preset' 100
+
+
+该进程可能是pactl list cards不出现选项的关键，该进程由谁创建还不知道。该进程有dbus创建，地址的值在创建时会发给应用程序，相同地址值的应用之间会通过dbus进行通信。但是当kill掉该进程后，pactl list cards就会什么都不返回。
+dbus-daemon --fork --session --address=unix:abstract=/tmp/dbus-P0pY7fZ0Sh
+
+
+修改了bluez的代码：
+hciattach.c中修改了
+{
+  在set_speed函数定义处增加`usleep(200000);`代码在函数开始处。
+}
+
+
+ntpdate asia.pool.ntp.org
+
+dmesg -n 8 
+./bluez-5.37/src/bluetoothd &
+./bluez/bin/hciattach /dev/ttyS0 bcm43xx 1500000 noflow -
+./bluez/bin/bluetoothctl
+./bluez/bin/hciconfig -a
+
+./configure --prefix=/home/firefly/bluez
+
+**** 要将linux内核的带级别控制的printk内容打印出来，在命令行 输入 dmesg -n 8 就将所有级别的信息都打印出来
+
+
+
+
+
+
+
+
+
+
+
+

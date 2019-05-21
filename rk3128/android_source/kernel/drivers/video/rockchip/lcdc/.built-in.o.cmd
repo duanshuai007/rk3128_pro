@@ -1,0 +1,1 @@
+cmd_drivers/video/rockchip/lcdc/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/video/rockchip/lcdc/built-in.o drivers/video/rockchip/lcdc/rk312x_lcdc.o ; scripts/mod/modpost drivers/video/rockchip/lcdc/built-in.o

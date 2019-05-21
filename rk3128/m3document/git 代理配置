@@ -1,0 +1,17 @@
+git 代理配置
+
+设置代理 http/https协议(clone https://前缀的repo会走ss)
+git config --global http.proxy 'socks5://127.0.0.1:9999'
+git config --global https.proxy 'socks5://127.0.0.1:9999'
+
+删除
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
+
+
+
+
+
+在局部变量前加上“static”关键字，就成了静态局部变量。静态局部变量存放在内存的全局数据区。函数结束时，静态局部变量不会消失，每次该函数调用 时，也不会为其重新分配空间。它始终驻留在全局数据区，直到程序运行结束。静态局部变量的初始化与全局变量类似．如果不为其显式初始化，则C++自动为其 初始化为0。
+静态局部变量与全局变量共享全局数据区，但静态局部变量只在定义它的函数中可见。静态局部变量与局部变量在存储位置上不同，使得其存在的时限也不同，导致对这两者操作 的运行结果也不同。

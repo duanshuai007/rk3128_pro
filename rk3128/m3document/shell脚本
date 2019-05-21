@@ -1,0 +1,302 @@
+shell脚本
+
+scp免密码：
+在想要免密码传输到机器上执行ssh-keygen -t rsa
+duanshuai@ubuntu:~/script$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/duanshuai/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/duanshuai/.ssh/id_rsa.
+Your public key has been saved in /home/duanshuai/.ssh/id_rsa.pub.
+The key fingerprint is:
+21:b7:7a:78:22:2b:a1:af:ca:e4:64:76:12:7f:94:86 duanshuai@ubuntu
+The key's randomart image is:
++--[ RSA 2048]----+
+|                 |
+|                 |
+|      . o        |
+|    . .o o       |
+| . E +  S        |
+|  + o  o         |
+| B +..+ o        |
+|O + .o +         |
+|+=...            |
++-----------------+
+然后把/home/duanshuai/.ssh/id_rsa.pub这个文件拷贝到目标设备上保存在目标设备的/home/[user]/.ssh/目录下，改名为authorized_keys
+就可以免密码scp了。
+
+
+
+特殊变量列表
+变量	含义
+$0	当前脚本的文件名
+$n	传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2。
+$#	传递给脚本或函数的参数个数。
+$*	传递给脚本或函数的所有参数。
+$@	传递给脚本或函数的所有参数。被双引号(" ")包含时，与 $* 稍有不同，下面将会讲到。
+$?	上个命令的退出状态，或函数的返回值。
+$$	当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。
+
+字符串判断
+-n 字符串非空时返回真
+-z 字符串空时返回真
+
+-e filename 如果 filename存在，则为真
+-d filename 如果 filename为目录，则为真 
+-f filename 如果 filename为常规文件，则为真
+-L filename 如果 filename为符号链接，则为真
+-r filename 如果 filename可读，则为真 
+-w filename 如果 filename可写，则为真 
+-x filename 如果 filename可执行，则为真
+-s filename 如果文件长度不为0，则为真
+-h filename 如果文件是软链接，则为真
+filename1 -nt filename2 如果 filename1比 filename2新，则为真。
+filename1 -ot filename2 如果 filename1比 filename2旧，则为真。
+-eq           //等于
+-ne           //不等于
+-gt            //大于 （greater ）
+-lt            //小于  （less）
+-ge            //大于等于
+-le            //小于等于
+ls
+
+在linux 中 命令执行状态：0 为真，其他为假
+
+逻辑与： &&
+第一个条件为假时，第二条件不用再判断，最终结果已经有；
+第一个条件为真时，第二条件必须得判断；
+逻辑或： ||
+逻辑非： ！
+
+
+因为执行upgrade_tool需要root权限，所以修改/etc/sudoes文件，增加frog ALL = NOPASSWD: ALL
+
+
+m3各个状态记录：
+在maskrom状态下能刷大包,也能进行flash清空
+sudo ./uograde_tool uf firmware.img
+
+在msc状态下能用sd进行状态切换，切换到loader状态。
+android系统运行起来就是msc模式
+
+在loader状态下能， 在Loader模式下也能够进行擦除
+sudo ./upgrade_tool ul m3/RK3128MiniLoaderAll_V2.25.bin
+sudo ./upgrade_tool di -p m3/parameter
+sudo ./upgrade_tool di uboot m3/uboot.img
+sudo ./upgrade_tool di resource m3/resource.img
+sudo ./upgrade_tool di boot m3/linux_boot.img
+sudo ./upgrade_tool rd
+sudo ./upgrade_tool ef m3/RK3128MiniLoaderAll_V2.25.bin   擦出整个nand flash
+
+在loader模式下能够执行rid,rfi,rci命令。不能执行sd命令。
+在loader模式下能够执行td,rd等命令
+在命令行方式下不能执行cd,sd,rfi,rid,rci，能够执行td,rd，lf,ef,di,ul,uf等
+
+在msc模式下不能执行td，可以执行sd,rd并且支持命令行方式。
+
+
+
+ls file.txt > info.txt 2>&1 	功能：将ls出来的信息输入到info.txt 2是标准错误输出，类似1，同样输出到info.txt中，info.txt这里只被打开一次，两个输入到信息不回产生竞争，信息都能够正确的保存。
+ls file.txt > info.txt 2>info.txt 	功能：将ls出来的信息输入到info.txt 2是标准错误输出，也输入到info.txt，两次会打开两次info.txt，会产生竞争，输入到信息会互相覆盖。
+
+
+
+三种状态
+3=Msc
+2=Maskrom
+1=Loader
+
+<1> erase all之后进入Maskrom的状态
+Vid=0x2207,Pid=0x310C
+<2> 刷入新的固件之后变成Loader
+Vid=0x2207,Pid=0x310C,LocationID=110
+<3> msc状态，不知道怎么能主动切换到msc状态
+Vid=0x2207,Pid=0x10,LocationID=11b
+
+cut -d ':' -f 2 是以域进行提取，以：为分隔符，找到第二个域。
+
+
+
+
+unbuffer nohup command > file.out 2>&1 &
+上面的unbuffer命令需要额外安装expect-devel，用来实时刷新。
+nohup命令用来忽略所有挂断（SIGHUP）信号，让你的程序即使在用户注销后依然继续运行。
+command是任何一段你想要执行的shell命令。
+> file.out 代表将command运行结果重定向到当前目录下的file.out文件中（如果要每次运行的结果追加到file.out后面，可以用>>而不是>）。
+2>&1表示将标准错误输出cerr的所有输出也都重定向到标准输出cout中，这样file.out中就会记录command命令运行过程中所有标准输出。
+最后一个&表示后台运行该command。
+
+
+比如要替换第123行><之间的内容替换为world
+sed -i  '123s/>.*</>world</' test.txt
+
+^M字符串删除方式
+sed -i "s/^M//g" file
+其^M的输入方式按住ctrl按键，然后依次按下v和m按键。
+
+
+格式：exit n
+退出。设置退出码为n。（Cause the shell to exit with a status of n.）
+格式：exit
+退出。退出码不变，即为最后一个命令的退出码。（If n is omitted, the exit status is that of the  last  command executed. ）
+格式：$?
+上一个命令的退出码。
+格式：trap "commands" EXIT
+退出时执行commands指定的命令。
+
+退出码（exit status，或exit code）的约定：
+0表示成功（Zero - Success）
+非0表示失败（Non-Zero  - Failure）
+2表示用法不当（Incorrect Usage）
+127表示命令没有找到（Command Not Found）
+126表示不是可执行的（Not an executable）
+>=128 信号产生
+
+判断一行含有多少个空格
+echo ${src} | tr -cd " " | wc -c 
+
+
+
+假设有变量 var=http://www.aaa.com/123.htm.
+1. # 号截取，删除左边字符，保留右边字符。
+echo ${var#*//}
+其中 var 是变量名，# 号是运算符，*// 表示从左边开始删除第一个 // 号及左边的所有字符
+即删除 http://
+结果是 ：www.aaa.com/123.htm
+2. ## 号截取，删除左边字符，保留右边字符。
+echo ${var##*/}
+##*/ 表示从左边开始删除最后（最右边）一个 / 号及左边的所有字符
+即删除 http://www.aaa.com/
+结果是 123.htm
+3. %号截取，删除右边字符，保留左边字
+echo ${var%/*}
+%/* 表示从右边开始，删除第一个 / 号及右边的字符
+结果是：http://www.aaa.com
+4. %% 号截取，删除右边字符，保留左边字符
+echo ${var%%/*}
+ %%/* 表示从右边开始，删除最后（最左边）一个 / 号及右边的字符
+结果是：http:
+5. 从左边第几个字符开始，及字符的个数
+echo ${var:0:5}
+其中的 0 表示左边第一个字符开始，5 表示字符的总个数。
+结果是：http:
+6. 从左边第几个字符开始，一直到结束。
+echo ${var:7}
+其中的 7 表示左边第8个字符开始，一直到结束。
+结果是 ：www.aaa.com/123.htm
+7. 从右边第几个字符开始，及字符的个数
+echo ${var:0-7:3}
+其中的 0-7 表示右边算起第七个字符开始，3 表示字符的个数。
+结果是：123
+8. 从右边第几个字符开始，一直到结束。
+echo ${var:0-7}
+表示从右边第七个字符开始，一直到结束。
+结果是：123.htm
+注：（左边的第一个字符是用 0 表示，右边的第一个字符用 0-1 表示）
+
+生成ssh key
+ssh-keygen -R 192.168.200.22
+
+断电
+sudo shutdown -h now
+
+强制保存
+:w !sudo tee > /dev/null %
+
+apt-get install xorg
+apt-get install chromium-browser
+apt-get install php
+apt-get install php-fpm
+安装unbuffer工具
+apt-get install expect-dev
+
+chrom开机启动
+[[ ! $DISPLAY && $XDG_VTNR -eq 1 && $(id --group) -ne 0 ]] && exec startx /usr/bin/chromium-browser --noerrdialogs --kiosk localhost
+
+将每行的最后一个no替换为connecting
+sed "s/\(.*\)no\(.*\)/\1connecting\2/"
+
+设置ubuntu启动脚本
+echo y | apt-get remove insserv
+将开机启动的脚本放入/etc/init.d/目录内，赋予可执行权限。
+
+执行sudo update-rc.d 脚本名 defaults 90
+
+ubuntu 16.04升级18.04,将/etc/apt/source.list中的源替换为18.04的源，执行apt-get update,apt-get upgrade
+
+sed替换字符串中某一部分
+echo /home/minicom | sed 's;\(/home\)/minicom;\1/lt/;'
+/home/lt/
+
+在指定字符串后追加内容
+atlga.xml 内容 Atlanta Chamber of Commerce
+sed 's/Atlanta/&, the capital of the south/' <atlga.xml.old > atlga.xml
+内容Atlanta, the capital of the south Chamber of Commerce
+
+sed 's/name/rename/g' 	全局替换
+sed 's/name/rename/' 	替换第一个匹配的
+sed 's/name/rename/2'	替换第二个匹配的
+
+这样替换的就是Tolstory而不是匹配到最后的wordly中的y了。
+echo "Tolstoy is wordly" | sed 's/T[[:alpha:]]*y/Camus/'
+
+在print元素之间用“,“进行分隔，”,“在输出时会变成空格
+awk -F: '{print "User",$1,"is really",$7}' /etc/passwd
+awk -F: '{printf "User %s is really %s\n", $1, $5}' /etc/passwd
+
+
+用sed指令找出不是用空格开头的行
+ifconfig -a | sed -n '/^[a-zA-Z0-9]/p'
+
+分隔符为=
+sed 's=/.*=[s2]=' 意思是将第一个发现的"/"之后的内容替换为s2,s2可以为空。
+比如s="jones:Adrian W. Jones/OSD211/555-0123"
+echo $s | sed 's=/.*==' 输出结果就是jones:Adrian W. Jones
+
+s="hello,i am duanshuai.you say:i am lili"
+echo $s | sed 's=\([^.]*\):=='
+输出结果为hello,i am duanshuai.i am lili，可以看出这是将.和冒号之间的内容替换为空字符串了。如果有多个.则取最后一个与第一个：之间的部分为匹配部分。
+echo $s | sed 's=\([^.]*\).=='
+输出结果为you say:i am lili，可以看出，截取了.后面的字符串.
+
+
+echo $s | sed 's%/.*%%' | sed 's=\([^:]*\):\(.*\) \([^ ]*\)=\1:\3, \2='
+这里共有三次自模式匹配，第一次匹配是\([^:]*\):匹配从开始到第一个冒号的部分，第二次匹配是\(.*\) 从冒号后开始到
+空格的部分，第三次匹配是 \([^ ]*\)从空格开始到最后。
+
+
+readonly 用来修饰变量，使其不能被修改
+
+${varname:-word}	如果varname非null，则返回其值。否则，返回word
+${varname:=word}	如果varname非null，则返回其值。否则，设置它为word并返回其值
+${varname:?message}	如果varname非null，则返回其值。否则，显示varname:message，如果message为空，则显示parameter null or not set
+${varname:+word}	如果varname非null，则返回word，否则返回null
+
+${varname#pattern}	如果模式匹配在变量值的开头，则删除匹配的最短部分，返回剩下部分
+例：
+${path#/*/}		以“/”作为分隔符，删除第一个匹配到的字符的左边，保留右边
+${path#/*/*/*/}	删除第三个匹配的字符的左边，保留右边
+
+${variable##pattern}
+例：
+${path##/*/}	删除从左侧开始匹配，匹配到的最后一个/的左边，保留右边
+
+${path%.*}		以“.”作为分隔符，从右边开始匹配，删除匹配的第一个.的右侧内容，保留左边
+${path%.*.*}	从右侧开始匹配，删除匹配到的第二个。的右侧内容，保留左侧内容
+
+${path%%.*}		从右侧开始匹配，删除匹配到的最后一个.的右侧内容，保留左侧内容
+
+
+
+
+grep 如何搜索以指定字符串开始的行
+grep ^str
+搜索以空格开始的行
+grep ^[[:space:]]
+
+
+
+
+
+

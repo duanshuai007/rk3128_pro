@@ -1,0 +1,12 @@
+安卓调用切换桌面
+input keyevent 3
+来启动桌面选择
+
+
+
+查看串口的时钟
+cat /sys/kernel/debug/clk/clk_summary | grep uart  
+
+
+
+

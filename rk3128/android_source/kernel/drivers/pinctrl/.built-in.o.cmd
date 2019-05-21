@@ -1,0 +1,1 @@
+cmd_drivers/pinctrl/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/pinctrl/built-in.o drivers/pinctrl/core.o drivers/pinctrl/pinctrl-utils.o drivers/pinctrl/pinmux.o drivers/pinctrl/pinconf.o drivers/pinctrl/devicetree.o drivers/pinctrl/pinconf-generic.o drivers/pinctrl/pinctrl-rockchip.o ; scripts/mod/modpost drivers/pinctrl/built-in.o

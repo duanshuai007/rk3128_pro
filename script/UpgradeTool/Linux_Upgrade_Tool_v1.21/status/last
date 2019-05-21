@@ -1,0 +1,1036 @@
+------------ [2018-07-13 10:17:21] ------------
+Switch Device OK.
+------------ [2018-07-13 10:20:23] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 10:22:09] ------------
+Switch Device OK.
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 10:25:09] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 10:26:56] ------------
+Switch Device OK.
+------------ [2018-07-13 10:28:00] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Start
+[30;41mWait For Loader Fail[37;40m
+------------ [2018-07-13 10:30:28] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 10:35:05] ------------
+Switch Device OK.
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 10:37:20] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 10:40:19] ------------
+Switch Device OK.
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 10:46:41] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 10:48:13] ------------
+Switch Device OK.
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 10:50:27] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 10:54:02] ------------
+Switch Device OK.
+------------ [2018-07-13 10:58:31] ------------
+Switch Device OK.
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 11:00:40] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 11:08:30] ------------
+Switch Device OK.
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 11:10:45] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 11:29:20] ------------
+Switch Device OK.
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 11:56:43] ------------
+Switch Device OK.
+------------ [2018-07-13 11:59:13] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 12:01:25] ------------
+Switch Device OK.
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 12:03:45] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 13:47:24] ------------
+Switch Device OK.
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 13:49:34] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 13:50:57] ------------
+Switch Device OK.
+------------ [2018-07-13 13:51:08] ------------
+Device not work in Msc,Can't switch mode
+------------ [2018-07-13 13:51:32] ------------
+Reset Device OK.
+------------ [2018-07-13 13:52:21] ------------
+Switch Device OK.
+------------ [2018-07-13 13:52:29] ------------
+Device not work in Msc,Can't switch mode
+------------ [2018-07-13 13:52:31] ------------
+Reset Device OK.
+------------ [2018-07-13 13:52:53] ------------
+Switch Device OK.
+------------ [2018-07-13 13:53:01] ------------
+Device not work in Msc,Can't switch mode
+------------ [2018-07-13 13:56:18] ------------
+Reset Device OK.
+------------ [2018-07-13 13:56:40] ------------
+Switch Device OK.
+------------ [2018-07-13 13:56:45] ------------
+Device Not work in Msc Mode, Switch Fail
+------------ [2018-07-13 13:56:50] ------------
+Device Not work in Msc Mode, Switch Fail
+------------ [2018-07-13 13:56:51] ------------
+Device Not work in Msc Mode, Switch Fail
+------------ [2018-07-13 13:56:52] ------------
+Device Not work in Msc Mode, Switch Fail
+------------ [2018-07-13 13:56:54] ------------
+Reset Device OK.
+------------ [2018-07-13 13:57:15] ------------
+Switch Device OK.
+------------ [2018-07-13 13:57:29] ------------
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 13:57:41] ------------
+Loading loader...
+Start to erase flash...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 14:02:21] ------------
+Loading loader...
+Start to erase flash...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 14:04:36] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 14:13:24] ------------
+Switch Device OK.
+------------ [2018-07-13 14:13:28] ------------
+Device Not work in Msc Mode, Switch Fail
+------------ [2018-07-13 14:13:32] ------------
+Reset Device OK.
+------------ [2018-07-13 14:13:54] ------------
+Switch Device OK.
+------------ [2018-07-13 14:14:08] ------------
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 14:16:19] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 14:37:52] ------------
+Switch Device OK.
+------------ [2018-07-13 14:38:17] ------------
+Reset Device OK.
+------------ [2018-07-13 14:38:42] ------------
+Switch Device OK.
+------------ [2018-07-13 14:38:56] ------------
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 14:41:04] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 14:44:17] ------------
+Switch Device OK.
+------------ [2018-07-13 14:44:22] ------------
+Reset Device OK.
+------------ [2018-07-13 14:44:50] ------------
+Switch Device OK.
+------------ [2018-07-13 14:45:04] ------------
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 14:45:09] ------------
+Reset Device Fail!
+------------ [2018-07-13 14:45:23] ------------
+
+Start to erase flash...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 14:45:34] ------------
+Loading loader...
+Start to erase flash...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 14:47:46] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 14:53:12] ------------
+Switch Device OK.
+------------ [2018-07-13 14:53:21] ------------
+Reset Device OK.
+------------ [2018-07-13 14:53:46] ------------
+Switch Device OK.
+------------ [2018-07-13 14:54:00] ------------
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 15:09:54] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 15:54:16] ------------
+Switch Device OK.
+------------ [2018-07-13 15:54:26] ------------
+Reset Device OK.
+------------ [2018-07-13 15:55:19] ------------
+Switch Device OK.
+------------ [2018-07-13 15:55:33] ------------
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 17:56:26] ------------
+Loading firmware...
+[30;41mLoading firmware failed![37;40m
+------------ [2018-07-13 17:57:09] ------------
+Loading firmware...
+[30;41mLoading firmware failed![37;40m
+------------ [2018-07-13 17:57:55] ------------
+Loading loader...
+Start to erase flash...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 18:02:39] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 18:03:40] ------------
+Switch Device OK.
+------------ [2018-07-13 18:06:12] ------------
+Switch Device OK.
+------------ [2018-07-13 18:06:26] ------------
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-13 18:09:40] ------------
+
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 18:10:35] ------------
+Switch Device OK.
+------------ [2018-07-13 18:12:07] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 18:15:55] ------------
+Switch Device OK.
+------------ [2018-07-13 18:17:27] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 18:28:15] ------------
+Switch Device OK.
+------------ [2018-07-13 18:29:48] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 18:33:16] ------------
+Switch Device OK.
+------------ [2018-07-13 18:34:54] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-13 18:35:41] ------------
+Switch Device OK.
+------------ [2018-07-13 18:35:55] ------------
+Loading loader...
+Start to erase flash...
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase IDB Success
+Reset Device Success
+Wait For Maskrom Success
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-16 09:42:31] ------------
+Loading loader...
+Start to erase flash...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Get FlashInfo Success
+Prepare IDB Success
+Erase Flash Start
+Erase Flash Total(14912),Current(14912)
+Erase Flash Success
+Reset Device Success
+Erase flash ok.
+------------ [2018-07-16 09:44:53] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Download Boot Success
+Wait For Maskrom Success
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-18 16:42:50] ------------
+Switch Device OK.
+------------ [2018-07-18 16:44:29] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-19 15:49:47] ------------
+Switch Device OK.
+------------ [2018-07-19 15:51:25] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.
+------------ [2018-07-19 18:00:30] ------------
+Switch Device OK.
+------------ [2018-07-19 18:02:02] ------------
+Loading firmware...
+Support Type:RK312A FW Ver:5.0.02 FW Time:2017-11-29 13:45:05
+Loader ver:2.25 Loader Time:2017-08-16 09:13:05
+Start to upgrade firmware...
+Test Device Success
+Check Chip Success
+Get FlashInfo Success
+Prepare IDB Success
+Download IDB Success
+Reset Device Success
+Wait For Loader Success
+Test Device Success
+Download Firmware Start
+Download Image Total(729543K),Current(729543K)
+Check Image Total(729543K),Current(729543K)
+Download Firmware Success
+Reset Device Success
+Upgrade firmware ok.

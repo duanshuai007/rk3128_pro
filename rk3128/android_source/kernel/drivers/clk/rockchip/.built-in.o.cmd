@@ -1,0 +1,1 @@
+cmd_drivers/clk/rockchip/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/clk/rockchip/built-in.o drivers/clk/rockchip/clk.o drivers/clk/rockchip/clk-ops.o drivers/clk/rockchip/clk-pll.o drivers/clk/rockchip/clk-pd.o ; scripts/mod/modpost drivers/clk/rockchip/built-in.o

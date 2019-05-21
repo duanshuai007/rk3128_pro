@@ -1,0 +1,37 @@
+挂载u盘:
+
+fdisk -l
+查看/dev/sda[x]
+
+创建挂载目录
+mkdir -p /mnt/usb
+
+挂载
+mount -o iocharset=cp936 /dev/sda1 /mnt/usb/
+
+查看usb内容
+ls /mnt/usb
+
+卸载
+umount /dev/sdb1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+安卓代码中bluedroid串口刷固件的流程整理。
+
+
+stack/hcic/hcicmds.c内的
+1110 BOOLEAN btsnd_hcic_reset (UINT8 local_controller_id)
+疑似是复位信号发送者
+
+
+206 typedef struct
+207 {
+208     uint16_t          event;
+209     uint16_t          len;
+210     uint16_t          offset;
+211     uint16_t          layer_specific;
+212     uint8_t           data[];
+213 } BT_HDR;
+214 
+215 #define BT_HDR_SIZE (sizeof (BT_HDR))
+
+
+在该文件内发现跟bluez代码相似的串口配置代码，需要进一步确认。
+device/common/bluetooth/libbt/src/hardware.c
+在hw_config_cback内通过userial_vendor_set_baud函数进行串口配置，波特率为UART_TARGET_BAUD_RATE。
+
+UART_TARGET_BAUD_RATE的值定义在device/common/bluetooth/libbt/include/vnd_rk30sdk.txt中，为1500000(1.5M)。
+
+
+ 首先hw_config_start被调用，在该函数内执行了HCI_RESET命令，然后state被设置为HW_CFG_START，回调函数设置为hw_config_cback，
+ 当hw_config_start执行完毕后hw_config_cback被调用，state状态为HW_CFG_START，波特率为UART_TARGET_BAUD_RATE=1.5M，所以直接执行
+ case HW_CFG_SET_UART_CLOCK:的内容，在该选项里执行了设置蓝牙模块波特率的命令，然后根据state
+ 864                 hw_cfg_cb.state = (hw_cfg_cb.f_set_baud_2) ? \
+ 865                             HW_CFG_SET_UART_BAUD_2 : HW_CFG_SET_UART_BAUD_1;
+ 可以有两种不同的操作，但都是设置了本地串口波特率。
+ 在hw_config_start中f_set_baud_2被设置为FALSE，所以这里跳转到HW_CFG_SET_UART_BAUD_1上继续执行。
+ 在HW_CFG_SET_UART_BAUD_1中实现了设置本机串口波特率的操作，然后设置state为HW_CFG_READ_LOCAL_NAME。
+ 在HW_CFG_READ_LOCAL_NAME通过字符串操作获取固件文件名，然后通过hw_config_findpatch函数来判断文件是否存在，
+ 如果文件存在，则设置state为HW_CFG_DL_MINIDRIVER。
+ 在HW_CFG_DL_MINIDRIVER中执行了一个50ms的延时函数，give time for placing firmware in download mode。然后设置state为HW_CFG_DL_FW_PATCH。
+ 在HW_CFG_DL_FW_PATCH首先执行p_buf->len = read(hw_cfg_cb.fw_fd, p, HCI_CMD_PREAMBLE_SIZE);其中的hw_cfg_cb.fw_fd是在HW_CFG_READ_LOCAL_NAME中通过open打开固件文件返回的描述符。返回的len就是固件文件的大小。
+ 在读取固件的文件的同时通过
+ 802                         is_proceeding = bt_vendor_cbacks->xmit_cb(opcode, \
+ 803                                                 p_buf, hw_config_cback);
+ 写入固件。
+ 在写入固件之后
+ 810 
+ 811                 /* Normally the firmware patch configuration file
+ 812                  * sets the new starting baud rate at 115200.
+ 813                  * So, we need update host's baud rate accordingly.
+ 814                  */
+ 通常设备的串口会初始化到115200，所以需要重新设置本机串口为115200波特率。
+ 826                 delay = look_up_fw_settlement_delay();
+ 827                 ALOGI("Setting fw settlement delay to %d ", delay);
+ 828                 ms_delay(delay);
+ 进行适当的延时。
+ 然后重新发送复位命令，并重新设置本机和远程的波特率为1.5M。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

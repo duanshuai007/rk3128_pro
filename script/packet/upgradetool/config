@@ -1,0 +1,4 @@
+action=/usr/share/nginx/html/tmp/upgradetool/action
+display=/usr/share/nginx/html/tmp/upgradetool/result
+device=/usr/share/nginx/html/tmp/upgradetool/cdevice
+firmware=W-M3_V1.3_P1710161_20171129_2nd.img

@@ -1,0 +1,36 @@
+在Ubuntu系统中安装程序时，会出现需要配置的对话框。这种对话框的出现，使大规模自动化部署该程序无法实现。例如在安装mysql-server程序时，需要填写root的密码。这里介绍一个通过实现设置安装配置信息，实现静默安装程序的方法。
+
+1.首先下载安装过程中需要配置的软件。 
+使用apt-get install的-d选项下载该软件。这个过程中不会安装该软件，而仅仅是将软件下载到/var/cache/apt/archives目录中。
+
+sudo apt-get install -d mysql-server
+1
+2.查看软件需要配置哪些信息 
+得到软件安装需要配置哪些信息得用到dpkg-preconfigure和debconf-show程序。 
+首先用dpkg-preconfigure得到程序所需的配置信息，这些配置信息会放在某个db中。执行过程中会显示程序安装过程中出现的对话框，按照正常的安装过程选择或填写即可。
+
+sudo dpkg-preconfigure /var/cache/apt/archives/mysql-server-5.5_5.5.50-0ubuntu0.14.04.1_amd64.deb
+1
+以上过程完成后，配置信息已经存放到db中，使用debconf-show查看该程序的配置信息。
+
+sudo debconf-show mysql-server-5.5
+1
+3.在脚本里，用debconf-set-selections设置然后安装，格式为 {包名} {配置项key} {配置项类型} {配置项value}
+
+cat <<- DEBCONF| sudo debconf-set-selections
+mysql-server mysql-server/root_password_again password jiacongfei
+mysql-server mysql-server/root_password password jiacongfei
+DEBCONF
+1
+2
+3
+4
+上边这个脚本可以放在自动化安装脚本中，在执行sudo apt-get install -y mysql-server，可以实现软件包的静默安装。
+
+
+
+
+
+
+
+

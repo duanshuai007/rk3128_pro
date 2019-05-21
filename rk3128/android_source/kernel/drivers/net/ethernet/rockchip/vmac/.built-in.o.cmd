@@ -1,0 +1,1 @@
+cmd_drivers/net/ethernet/rockchip/vmac/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/net/ethernet/rockchip/vmac/built-in.o drivers/net/ethernet/rockchip/vmac/rk29_vmac.o drivers/net/ethernet/rockchip/vmac/rk29_vmac_phy.o ; scripts/mod/modpost drivers/net/ethernet/rockchip/vmac/built-in.o

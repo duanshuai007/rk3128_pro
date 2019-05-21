@@ -1,0 +1,33 @@
+如何创建定制的 Ubuntu Live CD 镜像
+https://www.linuxidc.com/Linux/2018-01/150491.htm
+
+将现有Ubuntu系统做成LiveCD
+https://www.cnblogs.com/liangxiaofeng/p/5105803.html
+
+
+
+
+使用再生龙恢复ubuntu系统
+https://blog.csdn.net/liu870915/article/details/52251918
+
+
+
+
+
+http://cdimage.ubuntu.com/releases/
+ubuntu 16.04.3-server-arm64.iso下载地址
+http://old-releases.ubuntu.com/releases/16.04.3/
+
+
+
+
+ln -sr /run/systemd/resolve/resolv.conf /run/systemd/resolve/stub-resolv.conf
+
+
+
+
+
+
+Tuxboot 幫助你建立可開機的USB隨身碟，它支援Clonezilla live, DRBL live, GParted live 與 Tux2live。Tuxboot是從UNetbootin改進的，主要是改進unetbootin不能正確顯示上述套件的開機選單，此外也增加了一些新功能，例如自動抓取最新版本的套件。本程式可以在MS Windows與GNU/Linux上執行。使用過程中可以選擇下載最新版的Clonezilla live, DRBL live,或者GParted live來製作可開機隨身碟。
+
+http://tuxboot.nchc.org.tw

@@ -1,0 +1,97 @@
+m3 安装ubuntu后做的事情
+
+apt-get install usbutils		//安装lsusb工具
+
+安装系统后出现硬盘空间很小的情况
+执行resize2fs mmcblk6。 （mmcblk6是举例，用来表示文件系统所在的盘符）
+
+deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main multiverse restricted universe 
+deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-backports main multiverse restricted universe
+deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-proposed main multiverse restricted universe
+deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-security main multiverse restricted universe
+deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main multiverse restricted universe
+deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main multiverse restricted universe
+deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-backports main multiverse restricted universe
+deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-proposed main multiverse restricted universe
+deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-security main multiverse restricted universe
+deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main multiverse restricted universe
+
+nmcli dev wifi connect "FrogsHealth-A908" password "FrogsHealth@1" name "My cafe"
+
+
+ubuntu修改源
+修改/etc/apt/sources.list文件
+apt-get update
+apt-get upgrade
+
+
+安装ping工具
+apt-get install iputils-ping
+apt-get install vim
+apt-get install tftp
+apt-get install bluez
+apt-get install rfkill
+apt-get install network-manager	安装nmcli网络管理工具
+
+
+//安装lubuntu桌面系统
+apt-get install lubuntu-desktop
+//安装软键盘
+apt-get install onboard
+
+
+更新源后apt-get upgrade出现nmcli工具丢失，使用wpa工具配置网络，
+wpa_supplicant -i wlan0 -Dnl80211 -c /etc/wpa_supplicant.conf&
+在etc目录下新增wpa配置文件wpa_supplicant.conf
+其内容为
+ctrl_interface=/var/run/wpa_supplicant
+eapol_version=1
+ap_scan=1
+fast_reauth=1
+network={
+        ssid="FrogsHealth-A908-2G"
+        #psk="FrogsHealth@1"
+        psk=5c8389548c63a04e11511e4cf4b881b42fc0c1cd84fc47703a5a017692976d29
+}
+使用route add default gw 192.168.200.1 添加网关
+
+
+网络问题：ping ipaddr时出现权限不够的错误，解决方式如下：
+这个问题终于解决了，望以后遇到同样问题可以参考一下：
+修改 /etc/group,添加如下代码：
+inet:x:3003:root:
+net_raw:x:3004:root:
+然后命令行输入：
+gpasswd -a root inet
+如果失败则需要删除/etc/group.lock和/etc/gshadow.lock
+然后重启。
+该问题是由于在内核配置的时候打开了：
+CONFIG_ANDROID_PARANOID_NETWORK
+请在关闭该宏。
+
+
+apt-get build-dep bluez
+
+更新开发板的服务器时间：ntpdate asia.pool.ntp.org
+hwclock date
+
+
+Err:1 http://mirrors.ustc.edu.cn/ubuntu-ports xenial/universe armhf tftp armhf 0.17-18ubuntu2
+  Temporary failure resolving 'mirrors.ustc.edu.cn'
+这个错误需要修改/etc/passwd文件中的_apt中的65534为3003
+
+
+密码错误登陆不了，使用ssh root@板子IP地址登陆/.
+/etc/init.d/ssh start 启动ssh服务.
+
+图形界面自动登录：
+创建文件/etc/lightdm/lightdm.conf.d/10-autologin.conf
+添加内容：
+[Seat:*]
+autologin-guest = false
+autologin-user = firefly
+autologin-user-timeout = 0
+[SeatDefaults]
+allow-guest = false
+
+

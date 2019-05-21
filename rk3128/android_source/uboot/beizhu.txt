@@ -1,0 +1,6 @@
+
+
+u-boot也是好用的uboot，能够使用fastboot usb命令。它与uboot-rock的基线不同。
+uboot-rock 是好用的uboot，能够用fastboot usb命令进行boot和system的烧写。
+u-boot-rockchip是在uboot-rock的基础上移植lcdc，fb和rk818驱动,未能正常编译
+

@@ -1,0 +1,1 @@
+cmd_firmware/built-in.o :=  arm-eabi-ld -EL    -r -o firmware/built-in.o firmware/audience/es814/audience-es814-fw.bin.gen.o firmware/audience/es814/audience-es814-vs.bin.gen.o firmware/audience/cvqmodels/adnc_cvq_detection_bkg_w_hdrs.bin.gen.o ; scripts/mod/modpost firmware/built-in.o

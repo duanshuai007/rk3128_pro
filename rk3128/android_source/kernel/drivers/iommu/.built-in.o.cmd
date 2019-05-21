@@ -1,0 +1,1 @@
+cmd_drivers/iommu/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/iommu/built-in.o drivers/iommu/iommu.o drivers/iommu/of_iommu.o drivers/iommu/rockchip-iovmm.o drivers/iommu/rockchip-iommu.o ; scripts/mod/modpost drivers/iommu/built-in.o

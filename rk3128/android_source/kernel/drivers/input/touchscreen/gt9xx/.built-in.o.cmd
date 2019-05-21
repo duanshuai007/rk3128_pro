@@ -1,0 +1,1 @@
+cmd_drivers/input/touchscreen/gt9xx/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/input/touchscreen/gt9xx/built-in.o drivers/input/touchscreen/gt9xx/goodix_gt9xx.o ; scripts/mod/modpost drivers/input/touchscreen/gt9xx/built-in.o

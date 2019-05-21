@@ -1,0 +1,232 @@
+蓝牙socket
+
+在net/bluetooth/hci_sock.c文件内看到hci_sock_init函数。
+hci_sock_init中调用了proto_register(&hci_sk_proto, 0)，
+bt_sock_register(BTPROTO_HCI, &hci_sock_family_ops)，
+其中bt_sock_register实现非常简单，就是把参数中的ops赋值给bt_proto[proto]，proto这里等于BTPROTO_HCI。
+bt_procfs_init(&init_net, "hci", &hci_sk_list, NULL)对蓝牙socket进行了初始化。
+
+static struct proto hci_sk_proto = {
+    .name       = "HCI",
+    .owner      = THIS_MODULE,
+    .obj_size   = sizeof(struct hci_pinfo)
+};
+
+net/bluetooth/af_bluetooth.c 中 bt_init 是整个蓝牙驱动的初始化部分，该函数被subsys_initcall(bt_init);引用。
+函数内部先后执行了
+1.bt_sysfs_init
+net/bluetooth/hci_sysfs.c 内的函数 bt_sysfs_init中调用了debugfs_create_dir("bluetooth", NULL)，和class_create(THIS_MODULE, "bluetooth")，分别创建了debugfs文件系统的bluetooth调试信息和在/sys/class/目录下注册添加bluetooth，自动创建设备节点。
+
+2.sock_register(&bt_sock_family_ops);
+static struct net_proto_family bt_sock_family_ops = {
+    .owner  = THIS_MODULE,
+    .family = PF_BLUETOOTH,
+    .create = bt_sock_create,
+};
+将PF_BLUETOOTH类型的socket接口注册rcu_assign_pointer(net_families[ops->family], ops);.
+
+3.hci_sock_init
+该函数定义在net/bluetooth/hci_sock.c内，先后调用了
+	(1)proto_register(&hci_sk_proto, 0)；
+	(2)bt_sock_register(BTPROTO_HCI, &hci_sock_family_ops);
+	(3)bt_procfs_init(&init_net, "hci", &hci_sk_list, NULL);
+
+4.l2cap_init
+该函数内调用了l2cap_init_sockets
+	(1)proto_register(&l2cap_proto, 0);
+	(2)bt_sock_register(BTPROTO_L2CAP, &l2cap_sock_family_ops);
+	(3)bt_procfs_init(&init_net, "l2cap", &l2cap_sk_list, NULL);
+
+5.sco_init
+该函数内调用了
+	(1)proto_register(&sco_proto, 0);
+	(2)bt_sock_register(BTPROTO_SCO, &sco_sock_family_ops);
+	(3)bt_procfs_init(&init_net, "sco", &sco_sk_list, NULL);
+
+bt_procfs_init函数功能是在/proc/net目录下创建"hci","l2cap","sco"文件。
+
+static const struct net_proto_family hci_sock_family_ops = {
+    .family = PF_BLUETOOTH,
+    .owner  = THIS_MODULE,
+    .create = hci_sock_create,
+};
+
+在hci_sock_create中sock->ops = &hci_sock_ops;对设备的操作都定义在static const struct proto_ops hci_sock_ops 中。
+
+其中发送调用hci_sock_sendmsg。
+
+__sys_sendmsg->___sys_sendmsg->sock_sendmsg->__sock_sendmsg[->security_socket_sendmsg]->__sock_sendmsg_nosec->hci_sock_sendmsg
+
+SYSCALL_DEFINE3(sendmsg, int, fd, struct msghdr __user *, msg, unsigned int, flags)
+{
+    if (flags & MSG_CMSG_COMPAT)
+        return -EINVAL;
+    return __sys_sendmsg(fd, msg, flags);
+}
+
+net/bluetooth/hci_sock.c 为上层提供一个socket接口，应用程序可以通过socket的方式反问HCI
+hci_sock_init中注册了BTPROTO_HCI类型的family。
+hci_socket_create创建sock的函数，它的sock的ops指向hci_sock_ops。
+hci_sock_setsockopt/hci_sock_getsockopt设置获取sock的一些选项。
+hci_sock_sendmsg发送消息，根据消息类型把消息放到适当的队列中。
+hci_sock_recvmsg接收消息，从接受队列中取出消息。
+
+L2CAP是HCI之上的协议，提供Qos，分组，多路复用，分段和组装之类的功能。
+SCO也是运行在HCI之上的协议，它是面向连接的可靠的传输方式，主要用于声音数据传输。
+
+hci_sock_sendmsg会根据消息类型来分别执行，
+HCI_CHANNEL_CONTROL直接转交给mgmt_control进行处理。
+HCI_CHANNEL_MONITOR不做任何处理。
+HCI_CHANNEL_RAW根据数据包类型不同选择放到tx_work/cmd_work中，然后调度工作队列调用hci_tx_work/hci+cmd_work进行处理‘。
+
+hci_uart_register_dev->hci_alloc_dev->
+[    
+	INIT_WORK(&hdev->rx_work, hci_rx_work);
+    INIT_WORK(&hdev->cmd_work, hci_cmd_work);
+    INIT_WORK(&hdev->tx_work, hci_tx_work);
+]
+在hci_tx_work中对不同类型的数据包进行发送，发送部分函数都是调用hci_send_frame。
+在hci_send_frame中调用
+2600     /* Send copy to monitor */
+2601     hci_send_to_monitor(hdev, skb);
+2602 
+2603     if (atomic_read(&hdev->promisc)) {
+2604         /* Send copy to the sockets */
+2605         hci_send_to_sock(hdev, skb);
+2606     }
+2607 
+2608     /* Get rid of skb owner, prior to sending to the driver. */
+2609     skb_orphan(skb);
+2610 
+2611     return hdev->send(skb);
+
+先调用hci_send_to_monitor和hci_send_to_sock组成数据包，最终调用hdev->send进行发送。
+hdev->send最终指向函数hci_uart_send_frame，这个函数也是将代发送消息放入队列中，然后唤醒队列发送。
+hci_uart_send_frame->hci_uart_tx_wakeup(hu);->schedule_work(&hu->write_work);
+
+在hci_uart_tty_open中有对write_work的设置，
+INIT_WORK(&hu->init_ready, hci_uart_init_work);
+INIT_WORK(&hu->write_work, hci_uart_write_work);
+
+hci_uart_write_work函数内调用len = tty->ops->write(tty, skb->data, skb->len);来实际执行底层通信。
+这里的write函数最终会调用drivers/tty/serial/serial_core.c中uart_write
+
+
+ldisc N_HCI
+
+hciattach.c中uart_init初始化完成后调用ioctl(fd, TIOCSETD, &i)该语句将调用内核tty_ioctl执行其中的tiocsetd,设置ldisc为N_HCI.
+在内核代码中drivers/bluetooth/hci_ldisc.c中hci_uart_init在注册时就使用了N_HCI进行注册。
+tty_register_ldisc(N_HCI, &hci_uart_ldisc)，就是将当前打开的文件操作方式设置为这个注册的ldisc。
+接下来的open，close,ioctl等操作都是作用在这个ldisk的ops上。
+然后ioctl(fd, HCIUARTSETFLAGS, flags) 中设置了一些标志位
+在ioctl(fd, HCIUARTSETPROTO, u->proto)中通过查看代码可以看到drivers/bluetooth/hci_ldisc.c中hci_uart_tty_ioctl的swictch中的第一个case就是HCIUARTSETPROTO，执行了hci_uart_set_proto的操作。
+在hci_uart_set_proto->hci_uart_register_dev->hci_register_dev->hci_add_sysfs->device_add
+hci_uart_set_proto中p->open执行的是[drivers/bluetooth/hci_h4.c][h4_open]
+hci_register_dev定义在net/bluetooth/hci_core.c中，执行了hci0设备的注册操作。此时就可以通过hciconfig -a看到注册好的hci0设备了。
+
+在kill掉hciattach进程时，会调用hci_unregister_dev对hci设备进行反注册。
+
+
+
+bluetoothd属于后台服务进程，一直运行。
+bluetoothd在代码目录src文件夹内生成。
+在main.c中通过执行g_main_loop_run来进入主循环，它会一直阻塞在这，直到让它退出为止。
+
+bluetoothctl在代码根目录的client文件夹内生成，
+在启动之后设置相关的属性，创建dbus的client，设置dbus client的回调函数，然后执行bt_shell_run();
+bt_shell_run函数在 src/shared/shell.c中定义
+在bt_shell_run中首先调用了setup_signalfd，对信号进行屏蔽设置，然后设置了读取的回调函数
+然后进入了mainloop_run函数。在该函数内会一直循环判断执行。通过回调函数执行操作。
+bluetoothctl中的命令“pair”,"connect","trust"等都定义在client/main.c中。
+自己开一个进程，与bluetoothd之间通过dbus进行通信。
+
+bluez通过hci驱动与底层硬件进行通信。
+
+bluetoothd中通过adapter对hci进行操作。
+bluetoothd和bluetoothctl之间通过dbus进行通信。
+g_dbus_proxy_method_call
+
+dbus_conn
+mgmt_master
+
+在lib/hci.c中通过socket对hci借口进行操作，ioctl(sk, HCIGETDEVLIST, (void *) dl) 可以在内核代码net/bluetooth/hci_sock.c中找到对应的宏
+case HCIGETDEVLIST：
+    return hci_get_dev_list(argp);
+通过命令的方式来操作hci接口。
+
+bluez hci工具与内核中间通过ioctl方式来进行命令交互。 HCISETSCAN 
+
+在src/adapter.c 的 函数adapter_bonding_attempt函数内调用了
+6618     id = mgmt_send(adapter->mgmt, MGMT_OP_PAIR_DEVICE,
+6619                 adapter->dev_id, sizeof(cp), &cp,
+6620                 pair_device_complete, data,
+6621                 free_pair_device_data);
+
+在mgmt_send函数在src/shared/mgmt.c中定义
+584     request = create_request(opcode, index, length, param,
+585                     callback, user_data, destroy);
+
+......
+
+594     if (!queue_push_tail(mgmt->request_queue, request)) 
+
+......
+
+600     wakeup_writer(mgmt);
+
+
+create_request函数内对结构体进行赋值操作
+wakeup_writer函数内调用了io_set_write_handler函数。
+242     io_set_write_handler(mgmt->io, can_write_data, mgmt,
+243                         write_watch_destroy);
+在函数can_write_data内调用了send_request，在send_request内调用src/shared/io-glib.c中的
+io_send，该函数内调用writev执行了底层操作的功能吗？
+
+io_get_fd内调用g_io_channel_unix_get_fd(io->channel)，返回一个文件描述符7，
+
+hciattach守护进程的ppoll里面的fd=3，而在使用bluetoothctl时在io_send内使用的fd=7.
+
+在__btd_log_init函数内调用logging_open，执行fd = socket(PF_BLUETOOTH, SOCK_RAW, BTPROTO_HCI);
+获得的fd=5,该值被赋给logging_fd。
+
+fd=3时open(/dev/ttyS0, xxx)后的返回值。
+通过打印信息，发现fd=7出现在mgmt_new_default函数内，由语句fd = socket(PF_BLUETOOTH, SOCK_RAW | SOCK_CLOEXEC | SOCK_NONBLOCK, BTPROTO_HCI);执行后返回值。
+
+net/bluetooth/hci_core.c 内定义了 hci_register_dev
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
