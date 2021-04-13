@@ -1,1 +1,0 @@
-cmd_drivers/clocksource/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/clocksource/built-in.o drivers/clocksource/clksrc-of.o drivers/clocksource/rockchip_timer.o drivers/clocksource/arm_arch_timer.o ; scripts/mod/modpost drivers/clocksource/built-in.o

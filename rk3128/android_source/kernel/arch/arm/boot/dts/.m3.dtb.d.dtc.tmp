@@ -1,1 +1,0 @@
-arch/arm/boot/dts/m3.dtb: arch/arm/boot/dts/.m3.dtb.dts arch/arm/boot/dts/rk818.dtsi

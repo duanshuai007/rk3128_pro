@@ -1,1 +1,0 @@
-cmd_drivers/net/ethernet/rockchip/gmac/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/net/ethernet/rockchip/gmac/built-in.o drivers/net/ethernet/rockchip/gmac/stmmac.o ; scripts/mod/modpost drivers/net/ethernet/rockchip/gmac/built-in.o

@@ -1,1 +1,0 @@
-cmd_drivers/net/wireless/rockchip_wlan/rkwifi/bcmdhd/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/net/wireless/rockchip_wlan/rkwifi/bcmdhd/built-in.o drivers/net/wireless/rockchip_wlan/rkwifi/bcmdhd/bcmdhd.o ; scripts/mod/modpost drivers/net/wireless/rockchip_wlan/rkwifi/bcmdhd/built-in.o

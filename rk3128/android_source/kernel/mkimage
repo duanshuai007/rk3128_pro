@@ -1,3 +1,0 @@
-#!/bin/sh
-
-mkimage -A arm -O linux -T kernel -C none -a 0x60800800 -e 0x60800800 -n "linux310" -d arch/arm/boot/zImage arch/arm/boot/uImage

@@ -1,1 +1,0 @@
-cmd_pie/pie_stage3.o := arm-eabi-objcopy  -j ".pie.*" -j ".pie.text" -j ".pie.rk3036.text" -j ".pie.rk3036.data" -j ".pie.rk312x.text" -j ".pie.rk312x.data" -j ".pie.rk3126b.text" -j ".pie.rk3126b.data" -j ".pie.rk3188.text" -j ".pie.rk3188.data" -j ".pie.rk3288.text" -j ".pie.rk3288.data" pie/pie_stage2.o pie/pie_stage3.o

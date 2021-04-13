@@ -1,1 +1,0 @@
-cmd_drivers/thermal/thermal_sys.o := arm-eabi-ld -EL    -r -o drivers/thermal/thermal_sys.o drivers/thermal/thermal_core.o drivers/thermal/thermal_hwmon.o drivers/thermal/of-thermal.o drivers/thermal/step_wise.o ; scripts/mod/modpost drivers/thermal/thermal_sys.o

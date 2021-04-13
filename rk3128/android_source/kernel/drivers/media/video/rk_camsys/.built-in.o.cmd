@@ -1,1 +1,0 @@
-cmd_drivers/media/video/rk_camsys/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/media/video/rk_camsys/built-in.o drivers/media/video/rk_camsys/ext_flashled_drv/built-in.o ; scripts/mod/modpost drivers/media/video/rk_camsys/built-in.o

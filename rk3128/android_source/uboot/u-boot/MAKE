@@ -1,6 +1,0 @@
-#!/bin/sh
-
-
-make -j20
-
-/home/duanshuai/m3/rom/m3/u-boot/tools/loaderimage --pack u-boot.bin uboot.img
